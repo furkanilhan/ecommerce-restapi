@@ -32,5 +32,15 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
         }
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchProducts(@RequestParam String query) {
+        try {
+            List<ProductDTO> products = productService.searchProducts(query);
+            return ResponseEntity.ok(products);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
+        }
+    }
 }
 

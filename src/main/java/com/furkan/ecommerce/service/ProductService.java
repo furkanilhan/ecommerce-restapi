@@ -32,4 +32,14 @@ public class ProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
         return entityToDTO.toProductDTO(product);
     }
+
+    public List<ProductDTO> searchProducts(String query) {
+        if (query.length() < 3) {
+            throw new IllegalArgumentException("Search parameter must include at least 3 characters.");
+        }
+        String queryPart = "%" + query + "%";
+        return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart).stream()
+                .map(entityToDTO::toProductDTO)
+                .collect(Collectors.toList());
+    }
 }
