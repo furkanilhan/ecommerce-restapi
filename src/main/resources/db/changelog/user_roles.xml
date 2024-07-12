@@ -12,6 +12,8 @@
             <column name="role_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 
@@ -34,6 +36,8 @@
         <insert tableName="user_roles">
             <column name="user_id" value="1"/>
             <column name="role_id" value="1"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
     </changeSet>
 

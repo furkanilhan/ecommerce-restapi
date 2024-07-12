@@ -1,0 +1,60 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create Category table -->
+    <changeSet id="1" author="fuilhan">
+        <createTable tableName="category">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!-- add foreign key to parent_id column -->
+        <addForeignKeyConstraint
+                baseTableName="category"
+                baseColumnNames="parent_id"
+                referencedTableName="category"
+                referencedColumnNames="id"
+                constraintName="fk_category_parent"/>
+    </changeSet>
+
+    <!-- insert sample data -->
+    <changeSet id="2" author="fuilhan">
+        <insert tableName="category">
+            <column name="name" value="Giyim"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Ayakkabı"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Elektronik"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Tişört"/>
+            <column name="parent_id" value="1"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Laptop"/>
+            <column name="parent_id" value="3"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

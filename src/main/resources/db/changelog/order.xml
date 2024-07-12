@@ -1,0 +1,45 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create Order table -->
+    <changeSet id="13" author="fuilhan">
+        <createTable tableName="order">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="DECIMAL(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!-- Foreign key constraint for user_id -->
+        <addForeignKeyConstraint
+                baseTableName="order"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_order_user"/>
+    </changeSet>
+
+    <!-- insert sample data -->
+    <changeSet id="14" author="fuilhan">
+        <insert tableName="order">
+            <column name="user_id" value="1"/>
+            <column name="total_price" value="1039.97"/>
+            <column name="status" value="PENDING"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

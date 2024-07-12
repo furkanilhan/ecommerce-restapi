@@ -7,5 +7,13 @@
     <include file="db/changelog/user.xml"/>
     <include file="db/changelog/role.xml"/>
     <include file="db/changelog/user_roles.xml"/>
+    <include file="db/changelog/category.xml"/>
+    <include file="db/changelog/product.xml"/>
+    <include file="db/changelog/attribute_type.xml"/>
+    <include file="db/changelog/attribute.xml"/>
+    <include file="db/changelog/cart.xml"/>
+    <include file="db/changelog/cart_item.xml"/>
+    <include file="db/changelog/order.xml"/>
+    <include file="db/changelog/order_item.xml"/>
 
 </databaseChangeLog>

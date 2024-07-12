@@ -12,18 +12,23 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
     </changeSet>
 
     <changeSet id="2" author="fuilhan">
         <insert tableName="role">
-            <column name="id" value="1"/>
-            <column name="name" value="ROLE_USER"/>
+            <column name="name" value="USER"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="role">
-            <column name="id" value="2"/>
-            <column name="name" value="ROLE_ADMIN"/>
+            <column name="name" value="ADMIN"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
+
     </changeSet>
 
 </databaseChangeLog>

@@ -1,0 +1,109 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create Attribute table -->
+    <changeSet id="7" author="fuilhan">
+        <createTable tableName="attribute">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attribute_type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!-- Foreign key constraint for product_id -->
+        <addForeignKeyConstraint
+                baseTableName="attribute"
+                baseColumnNames="product_id"
+                referencedTableName="product"
+                referencedColumnNames="id"
+                constraintName="fk_attribute_product"/>
+
+        <!-- Foreign key constraint for attribute_type_id -->
+        <addForeignKeyConstraint
+                baseTableName="attribute"
+                baseColumnNames="attribute_type_id"
+                referencedTableName="attribute_type"
+                referencedColumnNames="id"
+                constraintName="fk_attribute_attribute_type"/>
+    </changeSet>
+
+    <!-- insert sample data -->
+    <changeSet id="8" author="fuilhan">
+        <insert tableName="attribute">
+            <column name="product_id" value="1"/>
+            <column name="attribute_type_id" value="1"/>
+            <column name="value" value="Siyah"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="1"/>
+            <column name="attribute_type_id" value="2"/>
+            <column name="value" value="M"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="1"/>
+            <column name="attribute_type_id" value="4"/>
+            <column name="value" value="Tişört"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="2"/>
+            <column name="attribute_type_id" value="1"/>
+            <column name="value" value="Beyaz"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="2"/>
+            <column name="attribute_type_id" value="3"/>
+            <column name="value" value="42"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="2"/>
+            <column name="attribute_type_id" value="6"/>
+            <column name="value" value="Unisex"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="3"/>
+            <column name="attribute_type_id" value="1"/>
+            <column name="value" value="Siyah"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="3"/>
+            <column name="attribute_type_id" value="7"/>
+            <column name="value" value="Intel i7"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="attribute">
+            <column name="product_id" value="3"/>
+            <column name="attribute_type_id" value="8"/>
+            <column name="value" value="16GB"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

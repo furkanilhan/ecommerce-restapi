@@ -1,0 +1,37 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create Cart table -->
+    <changeSet id="9" author="fuilhan">
+        <createTable tableName="cart">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+        <!-- Foreign key constraint for user_id -->
+        <addForeignKeyConstraint
+                baseTableName="cart"
+                baseColumnNames="user_id"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_cart_user"/>
+    </changeSet>
+
+    <!-- insert sample data -->
+    <changeSet id="10" author="fuilhan">
+        <insert tableName="cart">
+            <column name="user_id" value="1"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
