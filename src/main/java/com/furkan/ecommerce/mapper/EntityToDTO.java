@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class EntityToDTO {
     public ProductDTO toProductDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
         ProductDTO dto = new ProductDTO();
         dto.setId(product.getId());
         dto.setName(product.getName());
@@ -30,6 +33,9 @@ public class EntityToDTO {
     }
 
     public CategoryDTO toCategoryDTO(Category category) {
+        if (category == null) {
+            return null;
+        }
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
         dto.setName(category.getName());
@@ -37,6 +43,9 @@ public class EntityToDTO {
     }
 
     public List<AttributeDTO> toAttributeDTOs(List<Attribute> attributes) {
+        if (attributes == null) {
+            return null;
+        }
         return attributes.stream()
                 .map(attribute -> {
                     AttributeDTO dto = new AttributeDTO();
@@ -49,6 +58,9 @@ public class EntityToDTO {
     }
 
     public AttributeTypeDTO toAttributeTypeDTO(AttributeType attributeType) {
+        if (attributeType == null) {
+            return null;
+        }
         AttributeTypeDTO dto = new AttributeTypeDTO();
         dto.setId(attributeType.getId());
         dto.setName(attributeType.getName());

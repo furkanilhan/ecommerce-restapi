@@ -10,6 +10,9 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(@Param("query") String query);
+
+    List<Product> findByCategoryIdIn(List<Long> categoryIds);
 }
