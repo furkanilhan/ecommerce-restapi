@@ -2,17 +2,12 @@ package com.furkan.ecommerce.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.EqualsAndHashCode;
 
-import java.sql.Timestamp;
-
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Category extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
@@ -21,9 +16,4 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parentCategory;
 
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @UpdateTimestamp
-    private Timestamp updatedAt;
 }

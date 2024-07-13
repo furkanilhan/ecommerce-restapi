@@ -1,6 +1,6 @@
 package com.furkan.ecommerce.controller;
 
-import com.furkan.ecommerce.model.RoleName;
+import com.furkan.ecommerce.enums.RoleName;
 import com.furkan.ecommerce.model.Role;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.payload.request.LoginRequest;

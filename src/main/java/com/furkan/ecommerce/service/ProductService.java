@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.service;
 
 import com.furkan.ecommerce.dto.ProductDTO;
+import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.mapper.EntityToDTO;
 import com.furkan.ecommerce.model.Category;
 import com.furkan.ecommerce.model.Product;
@@ -31,19 +32,19 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDetailDTO getProductById(Long id) {
         Product product =  productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
-        return entityToDTO.toProductDTO(product);
+        return entityToDTO.toProductDetailDTO(product);
     }
 
-    public List<ProductDTO> searchProducts(String query) {
+    public List<ProductDetailDTO> searchProducts(String query) {
         if (query.length() < 3) {
             throw new IllegalArgumentException("Search parameter must include at least 3 characters.");
         }
         String queryPart = "%" + query + "%";
         return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart).stream()
-                .map(entityToDTO::toProductDTO)
+                .map(entityToDTO::toProductDetailDTO)
                 .collect(Collectors.toList());
     }
 

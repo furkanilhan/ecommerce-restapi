@@ -22,6 +22,16 @@
             <column name="price" type="DECIMAL(15, 2)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
         </createTable>
 
         <!-- Foreign key constraint for order_id -->
@@ -39,21 +49,5 @@
                 referencedTableName="product"
                 referencedColumnNames="id"
                 constraintName="fk_order_item_product"/>
-    </changeSet>
-
-    <!-- insert sample data -->
-    <changeSet id="16" author="fuilhan">
-        <insert tableName="order_item">
-            <column name="order_id" value="1"/>
-            <column name="product_id" value="1"/>
-            <column name="quantity" value="2"/>
-            <column name="price" value="19.99"/>
-        </insert>
-        <insert tableName="order_item">
-            <column name="order_id" value="1"/>
-            <column name="product_id" value="3"/>
-            <column name="quantity" value="1"/>
-            <column name="price" value="999.99"/>
-        </insert>
     </changeSet>
 </databaseChangeLog>

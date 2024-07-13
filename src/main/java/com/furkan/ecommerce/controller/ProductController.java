@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.controller;
 
 import com.furkan.ecommerce.dto.ProductDTO;
+import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,8 +27,8 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         try {
-            ProductDTO productDTO = productService.getProductById(id);
-            return ResponseEntity.ok(productDTO);
+            ProductDetailDTO productDetailDTO = productService.getProductById(id);
+            return ResponseEntity.ok(productDetailDTO);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
         }
@@ -36,7 +37,7 @@ public class ProductController {
     @GetMapping("/search")
     public ResponseEntity<?> searchProducts(@RequestParam String query) {
         try {
-            List<ProductDTO> products = productService.searchProducts(query);
+            List<ProductDetailDTO> products = productService.searchProducts(query);
             return ResponseEntity.ok(products);
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));

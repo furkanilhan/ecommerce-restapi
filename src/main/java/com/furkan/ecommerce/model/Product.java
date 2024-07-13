@@ -2,20 +2,19 @@ package com.furkan.ecommerce.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Product extends BaseEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     @Column(nullable = false)
     private String name;
@@ -23,22 +22,15 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private BigDecimal price;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private String type;
 
     @Column(nullable = false)
-    private int stock;
+    private String brand;
 
-    @CreationTimestamp
-    private Timestamp createdAt;
-
-    @UpdateTimestamp
-    private Timestamp updatedAt;
+    @Column(nullable = false)
+    private String model;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Attribute> attributes = new ArrayList<>();
+    private List<ProductVariant> productVariants = new ArrayList<>();
 
 }

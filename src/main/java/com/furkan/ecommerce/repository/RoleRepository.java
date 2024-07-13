@@ -1,7 +1,7 @@
 package com.furkan.ecommerce.repository;
 
 import com.furkan.ecommerce.model.Role;
-import com.furkan.ecommerce.model.RoleName;
+import com.furkan.ecommerce.enums.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -9,21 +9,25 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class OrderItem extends BaseEntity {
+public class ProductVariant extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Product product;
 
     @Column(nullable = false)
-    private int quantity;
+    private String color;
+
+    @Column(nullable = false)
+    private String variantKey;
+
+    @Column(nullable = false)
+    private String variantValue;
+
+    @Column(nullable = false)
+    private Integer quantity;
 
     @Column(nullable = false)
     private BigDecimal price;
 
 }
-

@@ -14,8 +14,16 @@
                 <constraints nullable="false"/>
             </column>
             <column name="parent_id" type="BIGINT"/>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
         </createTable>
 
         <!-- add foreign key to parent_id column -->
@@ -30,12 +38,7 @@
     <!-- insert sample data -->
     <changeSet id="2" author="fuilhan">
         <insert tableName="category">
-            <column name="name" value="Giyim"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
-        </insert>
-        <insert tableName="category">
-            <column name="name" value="Ayakkabı"/>
+            <column name="name" value="Moda"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -45,14 +48,20 @@
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
-            <column name="name" value="Tişört"/>
+            <column name="name" value="Telefon"/>
+            <column name="parent_id" value="2"/>
+            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Erkek"/>
             <column name="parent_id" value="1"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
-            <column name="name" value="Laptop"/>
-            <column name="parent_id" value="3"/>
+            <column name="name" value="Kadın"/>
+            <column name="parent_id" value="1"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>

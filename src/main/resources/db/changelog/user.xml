@@ -21,22 +21,16 @@
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="enabled" type="boolean" defaultValue="true"/>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="2" author="fuilhan" runOnChange="true">
-        <insert tableName="user">
-            <column name="username" value="furkan"/>
-            <column name="password" value="$2a$10$D0Uf5RTT4elJkmLYU5Uf6e4tZ2djLvA63h0dxl07FAKJFV/yZS6p2"/>
-            <column name="email" value="furkan@furkan.com"/>
-            <column name="first_name" value="Furkan"/>
-            <column name="last_name" value="İlhan"/>
-            <column name="enabled" value="true"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
-        </insert>
-    </changeSet>
-
 </databaseChangeLog>

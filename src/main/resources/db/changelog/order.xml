@@ -19,8 +19,16 @@
             <column name="status" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
         </createTable>
 
         <!-- Foreign key constraint for user_id -->
@@ -30,16 +38,5 @@
                 referencedTableName="user"
                 referencedColumnNames="id"
                 constraintName="fk_order_user"/>
-    </changeSet>
-
-    <!-- insert sample data -->
-    <changeSet id="14" author="fuilhan">
-        <insert tableName="order">
-            <column name="user_id" value="1"/>
-            <column name="total_price" value="1039.97"/>
-            <column name="status" value="PENDING"/>
-            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
-        </insert>
     </changeSet>
 </databaseChangeLog>

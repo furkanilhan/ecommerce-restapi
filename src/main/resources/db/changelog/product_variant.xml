@@ -1,0 +1,185 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create ProductVariant table -->
+    <changeSet id="7" author="fuilhan">
+        <createTable tableName="product_variant">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="variant_key" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="variant_value" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+
+        <!-- Foreign key constraint for product_id -->
+        <addForeignKeyConstraint
+                baseTableName="product_variant"
+                baseColumnNames="product_id"
+                referencedTableName="product"
+                referencedColumnNames="id"
+                constraintName="fk_product_variant_product"/>
+    </changeSet>
+
+    <!-- insert sample data -->
+    <changeSet id="8" author="fuilhan">
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Kırmızı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="S"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Kırmızı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="M"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Kırmızı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="L"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Sarı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="S"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Sarı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="M"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="1"/>
+            <column name="color" value="Sarı"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="L"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="2"/>
+            <column name="color" value="Mavi"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="S"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="2"/>
+            <column name="color" value="Mavi"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="M"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="2"/>
+            <column name="color" value="Mavi"/>
+            <column name="variant_key" value="Beden"/>
+            <column name="variant_value" value="L"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="55.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="4"/>
+            <column name="color" value="Beyaz"/>
+            <column name="variant_key" value="Hafıza"/>
+            <column name="variant_value" value="64GB"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="80000.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="4"/>
+            <column name="color" value="Beyaz"/>
+            <column name="variant_key" value="Hafıza"/>
+            <column name="variant_value" value="128GB"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="80000.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="4"/>
+            <column name="color" value="Siyah"/>
+            <column name="variant_key" value="Hafıza"/>
+            <column name="variant_value" value="64GB"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="80000.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+        <insert tableName="product_variant">
+            <column name="product_id" value="4"/>
+            <column name="color" value="Siyah"/>
+            <column name="variant_key" value="Hafıza"/>
+            <column name="variant_value" value="128GB"/>
+            <column name="quantity" value="15"/>
+            <column name="price" value="80000.00"/>
+            <column name="created_at" valueDate="2024-07-09T00:00:00"/>
+            <column name="updated_at" valueDate="2024-07-09T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
