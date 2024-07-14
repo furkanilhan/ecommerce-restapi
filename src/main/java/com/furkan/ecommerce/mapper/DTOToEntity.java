@@ -1,10 +1,7 @@
 package com.furkan.ecommerce.mapper;
 
 import com.furkan.ecommerce.dto.*;
-import com.furkan.ecommerce.model.Product;
-import com.furkan.ecommerce.model.Category;
-import com.furkan.ecommerce.model.Color;
-import com.furkan.ecommerce.model.ProductVariant;
+import com.furkan.ecommerce.model.*;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -22,9 +19,12 @@ public interface DTOToEntity {
 
     Color toColor(ColorDTO colorDTO);
 
+    Variant toVariant(VariantDTO variantDTO);
+
     @Mappings({
             @Mapping(target = "product", ignore = true),
-            @Mapping(target = "color", source = "color")
+            @Mapping(target = "color", source = "color"),
+            @Mapping(target = "variant", source = "variant")
     })
     ProductVariant toProductVariant(ProductVariantDTO productVariantDTO);
 

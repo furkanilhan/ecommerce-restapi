@@ -13,8 +13,7 @@ public class ProductVariantDTO {
     private Long id;
     private Long productId;
     private ColorDTO color;
-    private String variantKey;
-    private String variantValue;
+    private VariantDTO variant;
     private Integer quantity;
     private BigDecimal price;
 }

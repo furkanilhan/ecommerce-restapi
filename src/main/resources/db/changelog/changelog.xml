@@ -9,6 +9,7 @@
     <include file="db/changelog/user_roles.xml"/>
     <include file="db/changelog/category.xml"/>
     <include file="db/changelog/color.xml"/>
+    <include file="db/changelog/variant.xml"/>
     <include file="db/changelog/product.xml"/>
     <include file="db/changelog/product_variant.xml"/>
     <include file="db/changelog/cart.xml"/>

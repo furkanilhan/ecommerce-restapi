@@ -19,11 +19,9 @@ public class ProductVariant extends BaseEntity {
     @JoinColumn(nullable = false)
     private Color color;
 
-    @Column(nullable = false)
-    private String variantKey;
-
-    @Column(nullable = false)
-    private String variantValue;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Variant variant;
 
     @Column(nullable = false)
     private Integer quantity;
