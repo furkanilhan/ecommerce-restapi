@@ -5,7 +5,7 @@
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- Create Product table -->
-    <changeSet id="product-table" author="fuilhan">
+    <changeSet id="create-product-table" author="fuilhan">
         <createTable tableName="product">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -49,7 +49,7 @@
     </changeSet>
 
     <!-- insert sample data -->
-    <changeSet id="4" author="fuilhan">
+    <changeSet id="insert-product-data" author="fuilhan">
         <insert tableName="product">
             <column name="category_id" value="4"/>
             <column name="name" value="Polo Yaka Tişört"/>

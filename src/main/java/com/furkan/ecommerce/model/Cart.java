@@ -12,12 +12,12 @@ import java.util.List;
 @Data
 public class Cart extends BaseEntity {
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> items = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
 }
 

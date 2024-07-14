@@ -2,14 +2,25 @@ package com.furkan.ecommerce.mapper;
 
 import com.furkan.ecommerce.dto.*;
 import com.furkan.ecommerce.model.*;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface EntityToDTO {
+
+    @Mapping(target = "roles", ignore = true)
+    UserDTO toUserDTO(User user);
+
+    @AfterMapping
+    default void mapRoles(@MappingTarget UserDTO userDTO, User user) {
+        Set<String> roleNames = user.getRoles().stream()
+                .map(role -> role.getName().name())
+                .collect(Collectors.toSet());
+        userDTO.setRoles(roleNames);
+    }
 
     @Mapping(target = "category", source = "product.category")
     ProductDTO toProductDTO(Product product);
@@ -31,4 +42,12 @@ public interface EntityToDTO {
     ColorDTO toColorDTO(Color color);
 
     VariantDTO toVariantDTO(Variant variant);
+
+    @Mapping(target = "userId", source = "user.id")
+    CartDTO toCartDTO(Cart cart);
+
+    List<CartItemDTO> toCartItemDTOs(List<CartItem> cartItems);
+
+    @Mapping(target = "productVariantId", source = "productVariant.id")
+    CartItemDTO toCartItemDTO(CartItem cartItem);
 }

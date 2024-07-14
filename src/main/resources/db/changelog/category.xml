@@ -5,7 +5,7 @@
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- Create Category table -->
-    <changeSet id="1" author="fuilhan">
+    <changeSet id="create-category-table" author="fuilhan">
         <createTable tableName="category">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -36,7 +36,7 @@
     </changeSet>
 
     <!-- insert sample data -->
-    <changeSet id="2" author="fuilhan">
+    <changeSet id="insert-category-data" author="fuilhan">
         <insert tableName="category">
             <column name="name" value="Moda"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>

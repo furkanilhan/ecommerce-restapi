@@ -25,7 +25,8 @@
         </createTable>
 
         <addUniqueConstraint tableName="variant" columnNames="variant, value"/>
-
+    </changeSet>
+    <changeSet id="insert-variant-data" author="fuilhan">
         <insert tableName="variant">
             <column name="variant" value="Beden"/>
             <column name="value" value="S"/>

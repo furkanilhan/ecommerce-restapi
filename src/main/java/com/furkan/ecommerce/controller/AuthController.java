@@ -8,9 +8,9 @@ import com.furkan.ecommerce.payload.request.SignupRequest;
 import com.furkan.ecommerce.payload.response.JwtResponse;
 import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.repository.RoleRepository;
-import com.furkan.ecommerce.repository.UserRepository;
 import com.furkan.ecommerce.security.jwt.JwtUtils;
 import com.furkan.ecommerce.security.service.UserDetailsImpl;
+import com.furkan.ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class AuthController {
     AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
     RoleRepository roleRepository;
@@ -73,13 +73,13 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userService.checkByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userService.checkByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already taken!"));
         }
 
@@ -112,7 +112,7 @@ public class AuthController {
         }
 
         user.setRoles(roles);
-        userRepository.save(user);
+        userService.saveUser(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
