@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class ProductVariantDTO {
     private Long id;
     private Long productId;
-    private String color;
+    private ColorDTO color;
     private String variantKey;
     private String variantValue;
     private Integer quantity;

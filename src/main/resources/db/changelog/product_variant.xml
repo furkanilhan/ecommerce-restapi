@@ -5,7 +5,7 @@
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <!-- Create ProductVariant table -->
-    <changeSet id="7" author="fuilhan">
+    <changeSet id="create-product_variant-table" author="fuilhan">
         <createTable tableName="product_variant">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -13,7 +13,7 @@
             <column name="product_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="color" type="VARCHAR(255)">
+            <column name="color_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="variant_key" type="VARCHAR(255)">
@@ -47,13 +47,19 @@
                 referencedTableName="product"
                 referencedColumnNames="id"
                 constraintName="fk_product_variant_product"/>
+
+        <addForeignKeyConstraint baseTableName="product_variant"
+                                 baseColumnNames="color_id"
+                                 constraintName="fk_product_variant_color"
+                                 referencedTableName="color"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <!-- insert sample data -->
-    <changeSet id="8" author="fuilhan">
+    <changeSet id="insert-product_variant-data" author="fuilhan">
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Kırmızı"/>
+            <column name="color_id" value="1"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="S"/>
             <column name="quantity" value="15"/>
@@ -63,7 +69,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Kırmızı"/>
+            <column name="color_id" value="1"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="M"/>
             <column name="quantity" value="15"/>
@@ -73,7 +79,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Kırmızı"/>
+            <column name="color_id" value="1"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="L"/>
             <column name="quantity" value="15"/>
@@ -83,7 +89,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Sarı"/>
+            <column name="color_id" value="2"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="S"/>
             <column name="quantity" value="15"/>
@@ -93,7 +99,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Sarı"/>
+            <column name="color_id" value="2"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="M"/>
             <column name="quantity" value="15"/>
@@ -103,7 +109,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="1"/>
-            <column name="color" value="Sarı"/>
+            <column name="color_id" value="2"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="L"/>
             <column name="quantity" value="15"/>
@@ -113,7 +119,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="2"/>
-            <column name="color" value="Mavi"/>
+            <column name="color_id" value="3"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="S"/>
             <column name="quantity" value="15"/>
@@ -123,7 +129,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="2"/>
-            <column name="color" value="Mavi"/>
+            <column name="color_id" value="3"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="M"/>
             <column name="quantity" value="15"/>
@@ -133,7 +139,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="2"/>
-            <column name="color" value="Mavi"/>
+            <column name="color_id" value="3"/>
             <column name="variant_key" value="Beden"/>
             <column name="variant_value" value="L"/>
             <column name="quantity" value="15"/>
@@ -143,7 +149,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="4"/>
-            <column name="color" value="Beyaz"/>
+            <column name="color_id" value="4"/>
             <column name="variant_key" value="Hafıza"/>
             <column name="variant_value" value="64GB"/>
             <column name="quantity" value="15"/>
@@ -153,7 +159,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="4"/>
-            <column name="color" value="Beyaz"/>
+            <column name="color_id" value="4"/>
             <column name="variant_key" value="Hafıza"/>
             <column name="variant_value" value="128GB"/>
             <column name="quantity" value="15"/>
@@ -163,7 +169,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="4"/>
-            <column name="color" value="Siyah"/>
+            <column name="color_id" value="4"/>
             <column name="variant_key" value="Hafıza"/>
             <column name="variant_value" value="64GB"/>
             <column name="quantity" value="15"/>
@@ -173,7 +179,7 @@
         </insert>
         <insert tableName="product_variant">
             <column name="product_id" value="4"/>
-            <column name="color" value="Siyah"/>
+            <column name="color_id" value="5"/>
             <column name="variant_key" value="Hafıza"/>
             <column name="variant_value" value="128GB"/>
             <column name="quantity" value="15"/>
