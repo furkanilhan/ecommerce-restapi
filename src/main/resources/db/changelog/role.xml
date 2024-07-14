@@ -27,12 +27,12 @@
 
     <changeSet id="2" author="fuilhan">
         <insert tableName="role">
-            <column name="name" value="USER"/>
+            <column name="name" value="ROLE_USER"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="role">
-            <column name="name" value="ADMIN"/>
+            <column name="name" value="ROLE_ADMIN"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>

@@ -16,5 +16,5 @@ public class ProductDetailDTO {
     private CategoryDTO category;
     private String description;
     private String type;
-    private List<ProductVariantDTO> productVariantDTOS;
+    private List<ProductVariantDTO> productVariants;
 }

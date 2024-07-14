@@ -39,7 +39,7 @@ public class EntityToDTO {
                 .brand(product.getBrand())
                 .model(product.getModel())
                 .category(toCategoryDTO(product.getCategory()))
-                .productVariantDTOS(toProductVariantDTOs(product.getProductVariants()))
+                .productVariants(toProductVariantDTOs(product.getProductVariants()))
                 .build();
     }
 

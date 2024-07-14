@@ -8,12 +8,14 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("${apiPrefix}/products")
+@RequestMapping("${apiPrefix}/product")
 public class ProductController {
 
     @Autowired
@@ -48,6 +50,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId) {
         List<ProductDTO> products = productService.getProductsByCategory(categoryId);
         return ResponseEntity.ok(products);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addProduct(@RequestBody ProductDetailDTO productDetailDTO) {
+        ProductDetailDTO savedProduct = productService.addProduct(productDetailDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 }
 
