@@ -7,69 +7,25 @@ import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.model.ProductVariant;
 import com.furkan.ecommerce.model.Category;
 import com.furkan.ecommerce.model.Product;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-public class EntityToDTO {
-    public ProductDTO toProductDTO(Product product) {
-        if (product == null) {
-            return null;
-        }
-        return ProductDTO.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .brand(product.getBrand())
-                .model(product.getModel())
-                .category(toCategoryDTO(product.getCategory()))
-                .build();
-    }
+@Mapper(componentModel = "spring")
+public interface EntityToDTO {
 
-    public ProductDetailDTO toProductDetailDTO(Product product) {
-        if (product == null) {
-            return null;
-        }
-        return ProductDetailDTO.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .description(product.getDescription())
-                .type(product.getType())
-                .brand(product.getBrand())
-                .model(product.getModel())
-                .category(toCategoryDTO(product.getCategory()))
-                .productVariants(toProductVariantDTOs(product.getProductVariants()))
-                .build();
-    }
+    @Mapping(target = "category", source = "product.category")
+    ProductDTO toProductDTO(Product product);
 
-    public CategoryDTO toCategoryDTO(Category category) {
-        if (category == null) {
-            return null;
-        }
-        CategoryDTO dto = new CategoryDTO();
-        dto.setId(category.getId());
-        dto.setName(category.getName());
-        return dto;
-    }
+    @Mapping(target = "productVariants", source = "product.productVariants")
+    ProductDetailDTO toProductDetailDTO(Product product);
 
-    public List<ProductVariantDTO> toProductVariantDTOs(List<ProductVariant> productVariants) {
-        if (productVariants == null) {
-            return null;
-        }
-        return productVariants.stream()
-                .map(productVariant -> {
-                    ProductVariantDTO dto = new ProductVariantDTO();
-                    dto.setId(productVariant.getId());
-                    dto.setProductId(productVariant.getProduct().getId());
-                    dto.setColor(productVariant.getColor());
-                    dto.setVariantKey(productVariant.getVariantKey());
-                    dto.setVariantValue(productVariant.getVariantValue());
-                    dto.setPrice(productVariant.getPrice());
-                    dto.setQuantity(productVariant.getQuantity());
+    CategoryDTO toCategoryDTO(Category category);
 
-                    return dto;
-                })
-                .collect(Collectors.toList());
-    }
+    @Mapping(target = "productId", source = "product.id")
+    ProductVariantDTO toProductVariantDTO(ProductVariant productVariant);
+
+    List<ProductVariantDTO> toProductVariantDTOs(List<ProductVariant> productVariants);
 }

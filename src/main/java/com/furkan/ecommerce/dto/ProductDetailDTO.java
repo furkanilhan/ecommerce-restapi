@@ -7,7 +7,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
 public class ProductDetailDTO {
     private Long id;
     private String name;
