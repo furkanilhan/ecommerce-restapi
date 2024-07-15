@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +53,20 @@ public class CartController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/items")
+    public ResponseEntity<String> removeItemsFromCart(@AuthenticationPrincipal UserDetails userDetails,
+                                                    @RequestBody List<Long> cartItemIds) {
+        String username = userDetails.getUsername();
+        User user = userService.getUserByUsername(username);
+        ResponseEntity<String> response;
+
+        try {
+            response = cartService.removeItemsFromCart(user, cartItemIds);
+        } catch (ResponseStatusException ex) {
+            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
+        }
+        return response;
     }
 }
