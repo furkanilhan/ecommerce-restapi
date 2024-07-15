@@ -1,14 +1,14 @@
 package com.furkan.ecommerce.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
-@Data
 public class ProductVariant extends BaseEntity {
 
     @ManyToOne
@@ -25,6 +25,8 @@ public class ProductVariant extends BaseEntity {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    private Integer reservedQuantity;
 
     @Column(nullable = false)
     private BigDecimal price;

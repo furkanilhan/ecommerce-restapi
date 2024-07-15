@@ -4,9 +4,10 @@ import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class ProductDetailDTO {
     private Long id;
     private String name;

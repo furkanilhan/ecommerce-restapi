@@ -18,7 +18,7 @@ public class CartService {
     @Autowired
     private ProductVariantRepository productVariantRepository;
 
-    public void addToCart(User user, Long productVariantId, int quantity) {
+    public boolean addToCart(User user, Long productVariantId, int quantity) {
         Cart cart = user.getCart();
 
         if (cart == null) {
@@ -29,6 +29,11 @@ public class CartService {
 
         ProductVariant productVariant = productVariantRepository.findById(productVariantId)
                 .orElseThrow(() -> new RuntimeException("Product variant not found"));
+
+        int currentReservedQuantity = getCurrentReservedQuantity(productVariant);
+        if (productVariant.getQuantity() - currentReservedQuantity < quantity) {
+            return false;
+        }
 
         CartItem existingCartItem = cart.getCartItems().stream()
                 .filter(item -> item.getProductVariant().equals(productVariant))
@@ -44,7 +49,22 @@ public class CartService {
             cart.getCartItems().add(cartItem);
         }
 
+        productVariant.setReservedQuantity(currentReservedQuantity + quantity);
+        productVariantRepository.save(productVariant);
         cartRepository.save(cart);
+        return true;
+    }
+
+    public Integer getAvailableQuantity(Long productVariantId) {
+        ProductVariant productVariant = productVariantRepository.findById(productVariantId)
+                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+
+        return productVariant.getQuantity() - getCurrentReservedQuantity(productVariant);
+    }
+
+    public Integer getCurrentReservedQuantity(ProductVariant productVariant) {
+        return productVariant.getReservedQuantity() != null
+                ? productVariant.getReservedQuantity() : 0;
     }
 }
 

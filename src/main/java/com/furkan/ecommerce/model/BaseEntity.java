@@ -2,7 +2,8 @@ package com.furkan.ecommerce.model;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -10,8 +11,9 @@ import org.springframework.data.annotation.LastModifiedBy;
 
 import java.sql.Timestamp;
 
+@Getter
+@Setter
 @MappedSuperclass
-@Data
 public class BaseEntity {
 
     @Id

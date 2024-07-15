@@ -22,6 +22,8 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="reserved_quantity" type="INT">
+            </column>
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>

@@ -4,9 +4,9 @@ import com.furkan.ecommerce.enums.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role extends BaseEntity {

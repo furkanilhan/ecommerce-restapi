@@ -1,19 +1,19 @@
 package com.furkan.ecommerce.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class ProductVariantDTO {
     private Long id;
     private Long productId;
     private ColorDTO color;
     private VariantDTO variant;
     private Integer quantity;
+    private Integer reservedQuantity;
     private BigDecimal price;
 }
