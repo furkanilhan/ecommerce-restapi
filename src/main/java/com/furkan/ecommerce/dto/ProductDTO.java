@@ -9,7 +9,7 @@ import lombok.*;
 public class ProductDTO {
     private Long id;
     private String name;
-    private String brand;
-    private String model;
+    private BrandDTO brand;
+    private BrandModelDTO brandModel;
     private CategoryDTO category;
 }

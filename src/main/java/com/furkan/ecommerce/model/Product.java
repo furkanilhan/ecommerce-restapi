@@ -23,14 +23,17 @@ public class Product extends BaseEntity {
 
     private String description;
 
-    @Column(nullable = false)
-    private String type;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private ProductType productType;
 
-    @Column(nullable = false)
-    private String brand;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Brand brand;
 
-    @Column(nullable = false)
-    private String model;
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private BrandModel brandModel;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariant> productVariants = new ArrayList<>();

@@ -10,6 +10,9 @@
     <include file="db/changelog/category.xml"/>
     <include file="db/changelog/color.xml"/>
     <include file="db/changelog/variant.xml"/>
+    <include file="db/changelog/product_type.xml"/>
+    <include file="db/changelog/brand.xml"/>
+    <include file="db/changelog/brand_model.xml"/>
     <include file="db/changelog/product.xml"/>
     <include file="db/changelog/product_variant.xml"/>
     <include file="db/changelog/cart.xml"/>

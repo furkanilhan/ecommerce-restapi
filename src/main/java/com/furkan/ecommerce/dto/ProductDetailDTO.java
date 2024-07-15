@@ -11,10 +11,10 @@ import java.util.List;
 public class ProductDetailDTO {
     private Long id;
     private String name;
-    private String brand;
-    private String model;
+    private BrandDTO brand;
+    private BrandModelDTO brandModel;
     private CategoryDTO category;
     private String description;
-    private String type;
+    private ProductTypeDTO productType;
     private List<ProductVariantDTO> productVariants;
 }

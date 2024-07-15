@@ -17,15 +17,14 @@
                 <constraints nullable="false"/>
             </column>
             <column name="description" type="TEXT"/>
-
-            <column name="type" type="varchar(50)">
-                <constraints nullable="true"/>
+            <column name="product_type_id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
-            <column name="brand" type="varchar(255)">
-                <constraints nullable="true"/>
+            <column name="brand_id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
-            <column name="model" type="varchar(255)">
-                <constraints nullable="true"/>
+            <column name="brand_model_id" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="is_deleted" type="boolean" defaultValue="false">
                 <constraints nullable="false"/>
@@ -56,6 +55,24 @@
                 referencedTableName="category"
                 referencedColumnNames="id"
                 constraintName="fk_product_category"/>
+
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="product_type_id"
+                                 constraintName="fk_product_product_type_id"
+                                 referencedTableName="product_type"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="brand_id"
+                                 constraintName="fk_product_brand_id"
+                                 referencedTableName="brand"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="product"
+                                 baseColumnNames="brand_model_id"
+                                 constraintName="fk_product_brand_model_id"
+                                 referencedTableName="brand_model"
+                                 referencedColumnNames="id"/>
     </changeSet>
 
     <!-- insert sample data -->
@@ -64,9 +81,9 @@
             <column name="category_id" value="4"/>
             <column name="name" value="Polo Yaka Tişört"/>
             <column name="description" value="Kısa kollu, pamuklu, ince tişört"/>
-            <column name="type" value="Tişört"/>
-            <column name="brand" value="Lacoste"/>
-            <column name="model" value="J2G"/>
+            <column name="product_type_id" value="1"/>
+            <column name="brand_id" value="1"/>
+            <column name="brand_model_id" value="1"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -74,9 +91,9 @@
             <column name="category_id" value="4"/>
             <column name="name" value="Bisiklet Yaka Tişört"/>
             <column name="description" value="Çizgili, pamuklu, ince tişört"/>
-            <column name="type" value="Tişört"/>
-            <column name="brand" value="Lacoste"/>
-            <column name="model" value="AU8"/>
+            <column name="product_type_id" value="1"/>
+            <column name="brand_id" value="1"/>
+            <column name="brand_model_id" value="2"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -84,9 +101,9 @@
             <column name="category_id" value="4"/>
             <column name="name" value="Baskılı Tişört"/>
             <column name="description" value="Baskılı, keten, ince tişört"/>
-            <column name="type" value="Tişört"/>
-            <column name="brand" value="Mavi"/>
-            <column name="model" value="Black"/>
+            <column name="product_type_id" value="1"/>
+            <column name="brand_id" value="2"/>
+            <column name="brand_model_id" value="3"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -94,9 +111,9 @@
             <column name="category_id" value="3"/>
             <column name="name" value="Iphone 15"/>
             <column name="description" value="Eşsiz kamera, retina ekran"/>
-            <column name="type" value="Cep Telefonu"/>
-            <column name="brand" value="Apple"/>
-            <column name="model" value="Iphone 15"/>
+            <column name="product_type_id" value="2"/>
+            <column name="brand_id" value="3"/>
+            <column name="brand_model_id" value="4"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -104,9 +121,9 @@
             <column name="category_id" value="3"/>
             <column name="name" value="Iphone 15"/>
             <column name="description" value="En iyi kamera, retina ekran"/>
-            <column name="type" value="Cep Telefonu"/>
-            <column name="brand" value="Apple"/>
-            <column name="model" value="Iphone 15 Pro Max"/>
+            <column name="product_type_id" value="2"/>
+            <column name="brand_id" value="3"/>
+            <column name="brand_model_id" value="5"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
@@ -114,9 +131,9 @@
             <column name="category_id" value="3"/>
             <column name="name" value="Samsung Galaxy S23"/>
             <column name="description" value="Güçlü işlemci, oled ekran"/>
-            <column name="type" value="Cep Telefonu"/>
-            <column name="brand" value="Samsung"/>
-            <column name="model" value="Galaxy S23"/>
+            <column name="product_type_id" value="2"/>
+            <column name="brand_id" value="4"/>
+            <column name="brand_model_id" value="6"/>
             <column name="created_at" valueDate="2024-07-12T00:00:00"/>
             <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>

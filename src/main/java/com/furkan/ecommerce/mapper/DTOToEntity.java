@@ -35,6 +35,12 @@ public interface DTOToEntity {
 
     Variant toVariant(VariantDTO variantDTO);
 
+    ProductType toProductType(ProductTypeDTO productTypeDTO);
+
+    Brand toBrand(BrandDTO brandDTO);
+
+    BrandModel toBrandModel(BrandModelDTO brandModelDTO);
+
     @Mappings({
             @Mapping(target = "product", ignore = true),
             @Mapping(target = "color", source = "color"),

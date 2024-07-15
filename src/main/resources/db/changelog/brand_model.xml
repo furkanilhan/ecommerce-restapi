@@ -1,0 +1,64 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Create brand_model Table -->
+    <changeSet id="create-brand_model-table" author="fuilhan">
+        <createTable tableName="brand_model">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="brand_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="deleted_at" type="TIMESTAMP"/>
+            <column name="created_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="brand_model"
+                                 baseColumnNames="brand_id"
+                                 constraintName="fk_brand_model_brand"
+                                 referencedTableName="brand"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <!-- Insert Sample Data into brand_model Table -->
+    <changeSet id="insert-brand_model-data" author="fuilhan">
+        <insert tableName="brand_model">
+            <column name="name" value="J2G"/>
+            <column name="brand_id" valueComputed="1"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="AU8"/>
+            <column name="brand_id" valueComputed="1"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Black"/>
+            <column name="brand_id" valueComputed="2"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Iphone 15"/>
+            <column name="brand_id" valueComputed="3"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Iphone 15 Pro Max"/>
+            <column name="brand_id" valueComputed="3"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Galaxy S23"/>
+            <column name="brand_id" valueComputed="4"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

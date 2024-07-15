@@ -22,7 +22,11 @@ public interface EntityToDTO {
         userDTO.setRoles(roleNames);
     }
 
-    @Mapping(target = "category", source = "product.category")
+//    @Mappings({
+//            @Mapping(target = "category", source = "product.category"),
+//            @Mapping(target = "brand", source = "product.brand"),
+//            @Mapping(target = "brandModel", source = "product.brandModel"),
+//    })
     ProductDTO toProductDTO(Product product);
 
     @Mapping(target = "productVariants", source = "product.productVariants")
@@ -42,6 +46,12 @@ public interface EntityToDTO {
     ColorDTO toColorDTO(Color color);
 
     VariantDTO toVariantDTO(Variant variant);
+
+    ProductTypeDTO toProductTypeDTO(ProductType productType);
+
+    BrandDTO toBrandDTO(Brand brand);
+
+    BrandModelDTO toBrandModelDTO(BrandModel brandModel);
 
     @Mapping(target = "userId", source = "user.id")
     CartDTO toCartDTO(Cart cart);
