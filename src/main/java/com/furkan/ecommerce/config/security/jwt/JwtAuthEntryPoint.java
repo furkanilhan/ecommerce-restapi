@@ -1,4 +1,4 @@
-package com.furkan.ecommerce.security.jwt;
+package com.furkan.ecommerce.config.security.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

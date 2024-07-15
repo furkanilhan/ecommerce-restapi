@@ -1,7 +1,6 @@
-package com.furkan.ecommerce.security.service;
+package com.furkan.ecommerce.config.security.service;
 
 import com.furkan.ecommerce.model.User;
-import com.furkan.ecommerce.repository.UserRepository;
 import com.furkan.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

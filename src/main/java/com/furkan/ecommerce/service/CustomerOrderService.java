@@ -1,8 +1,12 @@
 package com.furkan.ecommerce.service;
 
 import com.furkan.ecommerce.enums.OrderStatus;
+import com.furkan.ecommerce.exception.PaymentException;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.CustomerOrderRepository;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class CustomerOrderService {
 
+    private static final String PAYMENT_SUCCEEDED = "succeeded";
+    private static final String CURRENCY = "TRY";
+
     @Autowired
     private CustomerOrderRepository customerOrderRepository;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Autowired
     private CartService cartService;
@@ -31,7 +42,7 @@ public class CustomerOrderService {
     private ProductVariantService productVariantService;
 
     @Transactional
-    public ResponseEntity<String> createOrder(User user) {
+    public void createOrder(User user) {
         Cart cart = cartService.findByUserId(user.getId());
 
         CustomerOrder customerOrder = new CustomerOrder();
@@ -55,14 +66,25 @@ public class CustomerOrderService {
         customerOrder.setItems(orderItems);
         customerOrder.setTotalPrice(totalPrice);
 
-        customerOrderRepository.save(customerOrder);
+        try {
+            PaymentIntent paymentIntent = paymentService.createPaymentIntent(totalPrice.longValue(), CURRENCY);
 
-        productVariantService.deceraseProductVariantsQuantity(orderItems);
+            paymentIntent = paymentService.confirmPayment(paymentIntent.getId());
 
-        cart.getCartItems().clear();
-        cartService.save(cart);
+            if (paymentIntent.getStatus().equals(PAYMENT_SUCCEEDED)){
+                customerOrderRepository.save(customerOrder);
+                productVariantService.deceraseProductVariantsQuantity(orderItems);
 
-        return ResponseEntity.ok("Order created successfully.");
+                cart.getCartItems().clear();
+                cartService.save(cart);
+
+            } else {
+                throw new PaymentException("Payment processing failed for request: " + paymentIntent.getId());
+            }
+        } catch (StripeException e) {
+            log.error(e.getMessage());
+            throw new PaymentException("Failed to create order: Payment failed.");
+        }
     }
 
     @Transactional

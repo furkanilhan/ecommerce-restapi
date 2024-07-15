@@ -3,12 +3,15 @@ package com.furkan.ecommerce.controller;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.service.CustomerOrderService;
 import com.furkan.ecommerce.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("${apiPrefix}/orders")
 public class CustomerOrderController {
@@ -25,8 +28,13 @@ public class CustomerOrderController {
         String username = userDetails.getUsername();
         User user = userService.getUserByUsername(username);
 
-        ResponseEntity<String> response = customerOrderService.createOrder(user);
-        return response;
+        try {
+            customerOrderService.createOrder(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Your order has been successfully received.");
+        } catch(Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to process your order. Please try again.");
+        }
     }
 
     @PostMapping("/cancel/{orderId}")

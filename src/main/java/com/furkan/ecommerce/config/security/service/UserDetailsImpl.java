@@ -1,4 +1,4 @@
-package com.furkan.ecommerce.security.service;
+package com.furkan.ecommerce.config.security.service;
 
 import com.furkan.ecommerce.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
