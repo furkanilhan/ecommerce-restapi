@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 public class OrderItem extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @JoinColumn(name = "customer_order_id", nullable = false)
+    private CustomerOrder customerOrder;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "product_variant_id", nullable = false)
+    private ProductVariant productVariant;
 
     @Column(nullable = false)
     private int quantity;

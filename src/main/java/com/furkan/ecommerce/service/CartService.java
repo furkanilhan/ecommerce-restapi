@@ -29,6 +29,15 @@ public class CartService {
     @Autowired
     private ProductVariantRepository productVariantRepository;
 
+    public Cart findByUserId(Long userId) {
+        return cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+    }
+
+    public void save(Cart cart) {
+        cartRepository.save(cart);
+    }
+
     public boolean addToCart(User user, Long productVariantId, int quantity) {
         Cart cart = user.getCart();
 

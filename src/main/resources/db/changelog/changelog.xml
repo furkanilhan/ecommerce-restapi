@@ -14,7 +14,7 @@
     <include file="db/changelog/product_variant.xml"/>
     <include file="db/changelog/cart.xml"/>
     <include file="db/changelog/cart_item.xml"/>
-    <include file="db/changelog/order.xml"/>
+    <include file="db/changelog/customer_order.xml"/>
     <include file="db/changelog/order_item.xml"/>
 
 </databaseChangeLog>
