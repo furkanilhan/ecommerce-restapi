@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.controller;
 
 import com.furkan.ecommerce.dto.ProductVariantDTO;
+import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.service.ProductVariantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,18 +20,29 @@ public class ProductVariantController {
     private ProductVariantService productVariantService;
 
     @GetMapping("/filter")
-    public List<ProductVariantDTO> filterProductVariants(@RequestParam(required = false) Integer minQuantity,
-                                                         @RequestParam(required = false) Integer maxQuantity,
-                                                         @RequestParam(required = false) BigDecimal minPrice,
-                                                         @RequestParam(required = false) BigDecimal maxPrice,
-                                                         @RequestParam(required = false) Long colorId,
-                                                         @RequestParam(required = false) Long variantId,
-                                                         @RequestParam(required = false) Long productTypeId,
-                                                         @RequestParam(required = false) Long brandId,
-                                                         @RequestParam(required = false) Long brandModelId
-                                                         ) {
-        return productVariantService.filterProductVariants(minQuantity, maxQuantity, minPrice,
-                maxPrice, colorId, variantId, productTypeId, brandId, brandModelId);
+    public List<ProductVariantDTO> filterProductVariants(
+            @RequestParam(required = false) Integer minQuantity,
+            @RequestParam(required = false) Integer maxQuantity,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) List<Long> colorIds,
+            @RequestParam(required = false) List<Long> variantIds,
+            @RequestParam(required = false) List<Long> productTypeIds,
+            @RequestParam(required = false) List<Long> brandIds,
+            @RequestParam(required = false) List<Long> brandModelIds) {
+
+        ProductVariantFilterDTO filterDTO = new ProductVariantFilterDTO();
+        filterDTO.setMinQuantity(minQuantity);
+        filterDTO.setMaxQuantity(maxQuantity);
+        filterDTO.setMinPrice(minPrice);
+        filterDTO.setMaxPrice(maxPrice);
+        filterDTO.setColorIds(colorIds);
+        filterDTO.setVariantIds(variantIds);
+        filterDTO.setProductTypeIds(productTypeIds);
+        filterDTO.setBrandIds(brandIds);
+        filterDTO.setBrandModelIds(brandModelIds);
+
+        return productVariantService.filterProductVariants(filterDTO);
     }
 
     //TODO: productVariant ekleme

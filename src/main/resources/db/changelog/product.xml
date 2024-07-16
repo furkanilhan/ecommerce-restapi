@@ -38,16 +38,6 @@
             <column name="updated_by" type="VARCHAR(255)"/>
         </createTable>
 
-        <!-- Index for name column -->
-        <createIndex indexName="idx_product_name" tableName="product">
-            <column name="name"/>
-        </createIndex>
-
-        <!-- Index for description column -->
-        <createIndex indexName="idx_product_description" tableName="product">
-            <column name="description"/>
-        </createIndex>
-
         <!-- create foreign key for category_id -->
         <addForeignKeyConstraint
                 baseTableName="product"
@@ -73,6 +63,29 @@
                                  constraintName="fk_product_brand_model_id"
                                  referencedTableName="brand_model"
                                  referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="create-product_variant-indexes" author="fuilhan">
+
+        <createIndex indexName="idx_product_name" tableName="product">
+            <column name="name"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_description" tableName="product">
+            <column name="description"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_product_type_id" tableName="product">
+            <column name="product_type_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_brand_id" tableName="product">
+            <column name="brand_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_brand_model_id" tableName="product">
+            <column name="brand_model_id"/>
+        </createIndex>
     </changeSet>
 
     <!-- insert sample data -->

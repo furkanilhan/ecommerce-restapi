@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.dto.ProductVariantDTO;
+import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.EntityToDTO;
 import com.furkan.ecommerce.model.*;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,10 +32,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private EntityToDTO entityToDTO;
 
     @Override
-    public List<ProductVariantDTO> filterProductVariants(Integer minQuantity, Integer maxQuantity,
-                                                         BigDecimal minPrice, BigDecimal maxPrice,
-                                                         Long colorId, Long variantId,
-                                                         Long productTypeId, Long brandId, Long brandModelId) {
+    public List<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO) {
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<ProductVariant> cq = cb.createQuery(ProductVariant.class);
@@ -44,37 +41,37 @@ public class ProductVariantServiceImpl implements ProductVariantService {
             cq.select(root);
 
             List<Predicate> predicates = new ArrayList<>();
-            if (minQuantity != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("quantity"), minQuantity));
+            if (filterDTO.getMinQuantity() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("quantity"), filterDTO.getMinQuantity()));
             }
-            if (maxQuantity != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("quantity"), maxQuantity));
+            if (filterDTO.getMaxQuantity() != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("quantity"), filterDTO.getMaxQuantity()));
             }
-            if (minPrice != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+            if (filterDTO.getMinPrice() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("price"), filterDTO.getMinPrice()));
             }
-            if (maxPrice != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+            if (filterDTO.getMaxPrice() != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("price"), filterDTO.getMaxPrice()));
             }
-            if (colorId != null) {
+            if (filterDTO.getColorIds() != null && !filterDTO.getColorIds().isEmpty()) {
                 Join<ProductVariant, Color> colorJoin = root.join("color");
-                predicates.add(cb.equal(colorJoin.get("id"), colorId));
+                predicates.add(colorJoin.get("id").in(filterDTO.getColorIds()));
             }
-            if (variantId != null) {
+            if (filterDTO.getVariantIds() != null && !filterDTO.getVariantIds().isEmpty()) {
                 Join<ProductVariant, Variant> variantJoin = root.join("variant");
-                predicates.add(cb.equal(variantJoin.get("id"), variantId));
+                predicates.add(variantJoin.get("id").in(filterDTO.getVariantIds()));
             }
-            if (productTypeId != null) {
+            if (filterDTO.getProductTypeIds() != null && !filterDTO.getProductTypeIds().isEmpty()) {
                 Join<ProductVariant, Product> productJoin = root.join("product");
-                predicates.add(cb.equal(productJoin.get("productType").get("id"), productTypeId));
+                predicates.add(productJoin.get("productType").get("id").in(filterDTO.getProductTypeIds()));
             }
-            if (brandId != null) {
+            if (filterDTO.getBrandIds() != null && !filterDTO.getBrandIds().isEmpty()) {
                 Join<ProductVariant, Product> productJoin = root.join("product");
-                predicates.add(cb.equal(productJoin.get("brand").get("id"), brandId));
+                predicates.add(productJoin.get("brand").get("id").in(filterDTO.getBrandIds()));
             }
-            if (brandModelId != null) {
+            if (filterDTO.getBrandModelIds() != null && !filterDTO.getBrandModelIds().isEmpty()) {
                 Join<ProductVariant, Product> productJoin = root.join("product");
-                predicates.add(cb.equal(productJoin.get("brandModel").get("id"), brandModelId));
+                predicates.add(productJoin.get("brandModel").get("id").in(filterDTO.getBrandModelIds()));
             }
 
             if (!predicates.isEmpty()) {

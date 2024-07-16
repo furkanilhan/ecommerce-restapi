@@ -60,6 +60,28 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="create-product_variant-indexes" author="fuilhan">
+        <createIndex indexName="idx_product_variant_quantity" tableName="product_variant">
+            <column name="quantity"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_variant_price" tableName="product_variant">
+            <column name="price"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_variant_color_id" tableName="product_variant">
+            <column name="color_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_variant_variant_id" tableName="product_variant">
+            <column name="variant_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_product_variant_product_id" tableName="product_variant">
+            <column name="product_id"/>
+        </createIndex>
+    </changeSet>
+
     <!-- insert sample data -->
     <changeSet id="insert-product_variant-data" author="fuilhan">
         <insert tableName="product_variant">
