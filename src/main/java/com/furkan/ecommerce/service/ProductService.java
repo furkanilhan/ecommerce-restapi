@@ -2,18 +2,22 @@ package com.furkan.ecommerce.service;
 
 import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.dto.ProductDetailDTO;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-    List<ProductDTO> getAllProducts();
+    Page<ProductDTO> getAllProducts(Pageable pageable);
 
     ProductDetailDTO getProductById(Long id);
 
-    List<ProductDetailDTO> searchProducts(String query);
+    Page<ProductDetailDTO> searchProducts(String query, Pageable pageable);
 
-    List<ProductDTO> getProductsByCategory(Long categoryId);
+    Page<ProductDTO> getProductsByCategory(Long categoryId, Pageable pageable);
 
     ProductDetailDTO addProduct(ProductDetailDTO productDetailDTO);
 
+    ProductDetailDTO updateProduct(Long productId, ProductDetailDTO updatedProductDTO);
+
+    void deleteProduct(Long productId);
 }

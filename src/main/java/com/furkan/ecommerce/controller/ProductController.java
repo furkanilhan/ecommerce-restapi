@@ -2,9 +2,13 @@ package com.furkan.ecommerce.controller;
 
 import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.dto.ProductDetailDTO;
+import com.furkan.ecommerce.exception.CustomException;
+import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,8 +24,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
-        return productService.getAllProducts();
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        return productService.getAllProducts(pageable);
     }
 
     @GetMapping("/{id}")
@@ -31,14 +35,18 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ProductDetailDTO>> searchProducts(@RequestParam String query) {
-        List<ProductDetailDTO> products = productService.searchProducts(query);
+    public ResponseEntity<Page<ProductDetailDTO>> searchProducts(@RequestParam String query, Pageable pageable) {
+        if (query.length() < 3) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Search parameter must include at least 3 characters.");
+        }
+        String queryPart = "%" + query + "%";
+        Page<ProductDetailDTO> products = productService.searchProducts(queryPart, pageable);
         return ResponseEntity.ok(products);
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId) {
-        List<ProductDTO> products = productService.getProductsByCategory(categoryId);
+    public ResponseEntity<Page<ProductDTO>> getProductsByCategory(@PathVariable Long categoryId, Pageable pageable) {
+        Page<ProductDTO> products = productService.getProductsByCategory(categoryId, pageable);
         return ResponseEntity.ok(products);
     }
 
@@ -49,7 +57,20 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
-    //TODO: product update
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ProductDetailDTO> updateProduct(@Valid @PathVariable Long id, @RequestBody ProductDetailDTO productDetailDTO) {
+        ProductDetailDTO savedProduct = productService.updateProduct(id, productDetailDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<MessageResponse> deleteProduct(@Valid @PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok(new MessageResponse("Product deleted successfully"));
+    }
+
     //TODO: product delete
 }
 

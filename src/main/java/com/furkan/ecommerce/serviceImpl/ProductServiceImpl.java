@@ -5,14 +5,15 @@ import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.DTOToEntity;
 import com.furkan.ecommerce.mapper.EntityToDTO;
-import com.furkan.ecommerce.model.Category;
-import com.furkan.ecommerce.model.Product;
+import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.ProductRepository;
 import com.furkan.ecommerce.repository.ProductVariantRepository;
 import com.furkan.ecommerce.service.CategoryService;
 import com.furkan.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,16 +39,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private DTOToEntity dtoToEntity;
 
-    public List<ProductDTO> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-
-        if (products.isEmpty()) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "No products found.");
-        }
-
-        return products.stream()
-                .map(entityToDTO::toProductDTO)
-                .collect(Collectors.toList());
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        Page<Product> productsPage = productRepository.findAll(pageable);
+        return productsPage.map(entityToDTO::toProductDTO);
     }
 
     public ProductDetailDTO getProductById(Long id) {
@@ -56,29 +50,18 @@ public class ProductServiceImpl implements ProductService {
         return entityToDTO.toProductDetailDTO(product);
     }
 
-    public List<ProductDetailDTO> searchProducts(String query) {
-        if (query.length() < 3) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "Search parameter must include at least 3 characters.");
-        }
-        String queryPart = "%" + query + "%";
-        return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart).stream()
-                .map(entityToDTO::toProductDetailDTO)
-                .collect(Collectors.toList());
+    public Page<ProductDetailDTO> searchProducts(String queryPart, Pageable pageable) {
+        Page<Product> products = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart, pageable);
+        return products.map(entityToDTO::toProductDetailDTO);
     }
 
-    public List<ProductDTO> getProductsByCategory(Long categoryId) {
+    public Page<ProductDTO> getProductsByCategory(Long categoryId, Pageable pageable) {
         List<Category> subCategories = categoryService.getAllSubCategories(categoryId);
         subCategories.add(categoryService.getCategoryById(categoryId));
         List<Long> categoryIds = subCategories.stream().map(Category::getId).collect(Collectors.toList());
 
-        List<Product> products = productRepository.findByCategoryIdIn(categoryIds);
-
-        if (products.isEmpty()) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "No products found for the given category.");
-        }
-        return products.stream()
-                .map(entityToDTO::toProductDTO)
-                .collect(Collectors.toList());
+        Page<Product> products = productRepository.findByCategoryIdIn(categoryIds, pageable);
+        return products.map(entityToDTO::toProductDTO);
     }
 
     @Transactional
@@ -92,5 +75,48 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product creation failed unexpectedly.", e);
         }
+    }
+
+    @Transactional
+    public ProductDetailDTO updateProduct(Long productId, ProductDetailDTO updatedProductDTO) {
+        try {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
+
+            product.setName(updatedProductDTO.getName());
+            product.setDescription(updatedProductDTO.getDescription());
+
+            Category category = new Category();
+            category.setId(updatedProductDTO.getCategory().getId());
+            product.setCategory(category);
+
+            ProductType productType = new ProductType();
+            productType.setId(updatedProductDTO.getProductType().getId());
+            product.setProductType(productType);
+
+            Brand brand = new Brand();
+            brand.setId(updatedProductDTO.getBrand().getId());
+            product.setBrand(brand);
+
+            BrandModel brandModel = new BrandModel();
+            brandModel.setId(updatedProductDTO.getBrandModel().getId());
+            product.setBrandModel(brandModel);
+
+            Product updatedProduct = productRepository.save(product);
+            return entityToDTO.toProductDetailDTO(updatedProduct);
+        } catch (DataIntegrityViolationException e) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Product update failed: " + e.getRootCause().getMessage(), e);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product update failed unexpectedly.", e);
+        }
+    }
+
+    @Transactional
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
+
+        product.setDeleted(true);
+        productRepository.save(product);
     }
 }
