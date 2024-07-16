@@ -11,6 +11,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +35,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private EntityToDTO entityToDTO;
 
     @Override
-    public List<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO) {
+    public Page<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO, Pageable pageable) {
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<ProductVariant> cq = cb.createQuery(ProductVariant.class);
@@ -81,9 +84,14 @@ public class ProductVariantServiceImpl implements ProductVariantService {
             TypedQuery<ProductVariant> query = entityManager.createQuery(cq);
             List<ProductVariant> resultList = query.getResultList();
 
-            return resultList.stream()
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), resultList.size());
+
+            List<ProductVariantDTO> resultDTOs = resultList.subList(start, end).stream()
                     .map(entityToDTO::toProductVariantDTO)
                     .collect(Collectors.toList());
+
+            return new PageImpl<>(resultDTOs, pageable, resultList.size());
         } catch (Exception ex) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while filtering product variants. Please try again later.", ex);
         }
