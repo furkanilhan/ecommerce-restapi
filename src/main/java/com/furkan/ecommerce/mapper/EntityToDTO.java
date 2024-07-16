@@ -22,11 +22,6 @@ public interface EntityToDTO {
         userDTO.setRoles(roleNames);
     }
 
-//    @Mappings({
-//            @Mapping(target = "category", source = "product.category"),
-//            @Mapping(target = "brand", source = "product.brand"),
-//            @Mapping(target = "brandModel", source = "product.brandModel"),
-//    })
     ProductDTO toProductDTO(Product product);
 
     @Mapping(target = "productVariants", source = "product.productVariants")

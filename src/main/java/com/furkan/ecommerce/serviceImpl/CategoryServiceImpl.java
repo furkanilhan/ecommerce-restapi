@@ -1,10 +1,11 @@
 package com.furkan.ecommerce.serviceImpl;
 
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.model.Category;
 import com.furkan.ecommerce.repository.CategoryRepository;
 import com.furkan.ecommerce.service.CategoryService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found with id: " + categoryId));
     }
 
     public List<Category> getCategoriesByParentId(Long parentId) {

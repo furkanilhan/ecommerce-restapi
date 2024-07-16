@@ -1,14 +1,11 @@
 package com.furkan.ecommerce.service;
 
-import com.furkan.ecommerce.model.Category;
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.model.User;
-import com.furkan.ecommerce.repository.CategoryRepository;
 import com.furkan.ecommerce.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -18,12 +15,12 @@ public class UserService {
 
     public User getUserById(Long useryId) {
         return userRepository.findById(useryId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + useryId));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "User not found with id: " + useryId));
     }
 
     public User getUserByUsername(String userName) {
         return userRepository.findByUsername(userName)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with name: " + userName));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "User not found with name: " + userName));
     }
 
     public Boolean checkByUsername(String userName) {
@@ -34,7 +31,11 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public void saveUser(User user) {
+        try {
+            userRepository.save(user);
+        } catch (Exception ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred while saving user.");
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.dto.ProductVariantDTO;
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.EntityToDTO;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.ProductVariantRepository;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,86 +36,98 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                                                          BigDecimal minPrice, BigDecimal maxPrice,
                                                          Long colorId, Long variantId,
                                                          Long productTypeId, Long brandId, Long brandModelId) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<ProductVariant> cq = cb.createQuery(ProductVariant.class);
-        Root<ProductVariant> root = cq.from(ProductVariant.class);
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<ProductVariant> cq = cb.createQuery(ProductVariant.class);
+            Root<ProductVariant> root = cq.from(ProductVariant.class);
 
-        cq.select(root);
+            cq.select(root);
 
-        List<Predicate> predicates = new ArrayList<>();
-        if (minQuantity != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("quantity"), minQuantity));
-        }
-        if (maxQuantity != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("quantity"), maxQuantity));
-        }
-        if (minPrice != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("price"), minPrice));
-        }
-        if (maxPrice != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
-        }
-        if (colorId != null) {
-            Join<ProductVariant, Color> colorJoin = root.join("color");
-            predicates.add(cb.equal(colorJoin.get("id"), colorId));
-        }
-        if (variantId != null) {
-            Join<ProductVariant, Variant> variantJoin = root.join("variant");
-            predicates.add(cb.equal(variantJoin.get("id"), variantId));
-        }
-        if (productTypeId != null) {
-            Join<ProductVariant, Product> productJoin = root.join("product");
-            predicates.add(cb.equal(productJoin.get("productType").get("id"), productTypeId));
-        }
-        if (brandId != null) {
-            Join<ProductVariant, Product> productJoin = root.join("product");
-            predicates.add(cb.equal(productJoin.get("brand").get("id"), brandId));
-        }
-        if (brandModelId != null) {
-            Join<ProductVariant, Product> productJoin = root.join("product");
-            predicates.add(cb.equal(productJoin.get("brandModel").get("id"), brandModelId));
-        }
+            List<Predicate> predicates = new ArrayList<>();
+            if (minQuantity != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("quantity"), minQuantity));
+            }
+            if (maxQuantity != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("quantity"), maxQuantity));
+            }
+            if (minPrice != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+            }
+            if (maxPrice != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+            }
+            if (colorId != null) {
+                Join<ProductVariant, Color> colorJoin = root.join("color");
+                predicates.add(cb.equal(colorJoin.get("id"), colorId));
+            }
+            if (variantId != null) {
+                Join<ProductVariant, Variant> variantJoin = root.join("variant");
+                predicates.add(cb.equal(variantJoin.get("id"), variantId));
+            }
+            if (productTypeId != null) {
+                Join<ProductVariant, Product> productJoin = root.join("product");
+                predicates.add(cb.equal(productJoin.get("productType").get("id"), productTypeId));
+            }
+            if (brandId != null) {
+                Join<ProductVariant, Product> productJoin = root.join("product");
+                predicates.add(cb.equal(productJoin.get("brand").get("id"), brandId));
+            }
+            if (brandModelId != null) {
+                Join<ProductVariant, Product> productJoin = root.join("product");
+                predicates.add(cb.equal(productJoin.get("brandModel").get("id"), brandModelId));
+            }
 
-        if (!predicates.isEmpty()) {
-            cq.where(predicates.toArray(new Predicate[0]));
+            if (!predicates.isEmpty()) {
+                cq.where(predicates.toArray(new Predicate[0]));
+            }
+
+            TypedQuery<ProductVariant> query = entityManager.createQuery(cq);
+            List<ProductVariant> resultList = query.getResultList();
+
+            return resultList.stream()
+                    .map(entityToDTO::toProductVariantDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while filtering product variants. Please try again later.", ex);
         }
-
-        TypedQuery<ProductVariant> query = entityManager.createQuery(cq);
-        List<ProductVariant> resultList = query.getResultList();
-
-        return resultList.stream()
-                .map(entityToDTO::toProductVariantDTO)
-                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void deceraseProductVariantsQuantity(List<OrderItem> orderItems) {
-        for (OrderItem orderItem : orderItems) {
-            ProductVariant productVariant = orderItem.getProductVariant();
-            int quantity = orderItem.getQuantity();
+    public void decreaseProductVariantsQuantity(List<OrderItem> orderItems) {
+        try {
+            for (OrderItem orderItem : orderItems) {
+                ProductVariant productVariant = orderItem.getProductVariant();
+                int quantity = orderItem.getQuantity();
 
-            if (productVariant.getQuantity() < quantity) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient stock for product variant: " + productVariant.getId());
+                if (productVariant.getQuantity() < quantity) {
+                    throw new CustomException(HttpStatus.BAD_REQUEST, "Insufficient stock for product variant: " + productVariant.getId());
+                }
+
+                productVariant.setQuantity(productVariant.getQuantity() - quantity);
+                productVariant.setReservedQuantity(productVariant.getReservedQuantity() - quantity);
+
+                productVariantRepository.save(productVariant);
             }
-
-            productVariant.setQuantity(productVariant.getQuantity() - quantity);
-            productVariant.setReservedQuantity(productVariant.getReservedQuantity() - quantity);
-
-            productVariantRepository.save(productVariant);
+        } catch (RuntimeException ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to decrease product variants quantity.", ex);
         }
     }
 
     @Override
     @Transactional
     public void increaseProductVariantsQuantity(List<OrderItem> orderItems) {
-        for (OrderItem orderItem : orderItems) {
-            ProductVariant productVariant = orderItem.getProductVariant();
-            int quantity = orderItem.getQuantity();
+        try {
+            for (OrderItem orderItem : orderItems) {
+                ProductVariant productVariant = orderItem.getProductVariant();
+                int quantity = orderItem.getQuantity();
 
-            productVariant.setQuantity(productVariant.getQuantity() + quantity);
+                productVariant.setQuantity(productVariant.getQuantity() + quantity);
 
-            productVariantRepository.save(productVariant);
+                productVariantRepository.save(productVariant);
+            }
+        } catch (RuntimeException ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to increase product variants quantity.", ex);
         }
     }
 }

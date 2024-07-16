@@ -7,8 +7,8 @@ public interface CustomerOrderService {
 
     void createOrder(User user);
 
-    ResponseEntity<String> cancelOrder(Long orderId);
+    void cancelOrder(Long orderId);
 
-    ResponseEntity<String> returnOrder(Long orderId);
+    void returnOrder(Long orderId);
 
 }

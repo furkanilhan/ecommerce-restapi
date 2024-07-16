@@ -1,7 +1,7 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.enums.OrderStatus;
-import com.furkan.ecommerce.exception.PaymentException;
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.CustomerOrderRepository;
 import com.furkan.ecommerce.service.*;
@@ -10,7 +10,6 @@ import com.stripe.model.PaymentIntent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,31 +73,30 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
             if (paymentIntent.getStatus().equals(PAYMENT_SUCCEEDED)){
                 customerOrderRepository.save(customerOrder);
-                productVariantService.deceraseProductVariantsQuantity(orderItems);
+                productVariantService.decreaseProductVariantsQuantity(orderItems);
 
                 cart.getCartItems().clear();
                 cartService.save(cart);
 
             } else {
-                throw new PaymentException("Payment processing failed for request: " + paymentIntent.getId());
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Payment processing failed for request: " + paymentIntent.getId());
             }
         } catch (StripeException e) {
-            log.error(e.getMessage());
-            throw new PaymentException("Failed to create order: Payment failed.");
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create order: Payment failed.", e);
         }
     }
 
     @Transactional
-    public ResponseEntity<String> cancelOrder(Long orderId) {
+    public void cancelOrder(Long orderId) {
         Optional<CustomerOrder> order = customerOrderRepository.findById(orderId);
         if (order.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
+            throw new CustomException(HttpStatus.NOT_FOUND, "Order not found.");
         }
 
         CustomerOrder customerOrder = order.get();
 
         if (customerOrder.getStatus() != OrderStatus.CREATED) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot cancel order with status: " + customerOrder.getStatus());
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Cannot cancel order with status: " + customerOrder.getStatus());
         }
 
         List<OrderItem> orderItems = customerOrder.getItems();
@@ -112,24 +110,21 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         orterItemService.saveOrderItems(orderItems);
         customerOrderRepository.save(customerOrder);
         productVariantService.increaseProductVariantsQuantity(orderItems);
-
-        return ResponseEntity.ok("Order cancelled successfully.");
     }
 
     @Transactional
-    public ResponseEntity<String> returnOrder(Long orderId) {
+    public void returnOrder(Long orderId) {
         Optional<CustomerOrder> optionalOrder = customerOrderRepository.findById(orderId);
         if (optionalOrder.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CustomerOrder not found.");
+            throw new CustomException(HttpStatus.NOT_FOUND, "Order not found.");
         }
 
         CustomerOrder customerOrder = optionalOrder.get();
 
         if (customerOrder.getStatus() != OrderStatus.DELIVERED) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cannot return customerOrder with status: " + customerOrder.getStatus());
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Cannot return order with status: " + customerOrder.getStatus());
         }
-
-        return ResponseEntity.ok("CustomerOrder returned successfully.");
+        //TODO: sipariş iade işlemleri
     }
 
 }

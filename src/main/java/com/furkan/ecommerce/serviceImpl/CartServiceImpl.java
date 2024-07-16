@@ -1,5 +1,6 @@
 package com.furkan.ecommerce.serviceImpl;
 
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.model.Cart;
 import com.furkan.ecommerce.model.CartItem;
 import com.furkan.ecommerce.model.ProductVariant;
@@ -10,10 +11,8 @@ import com.furkan.ecommerce.repository.ProductVariantRepository;
 import com.furkan.ecommerce.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,14 +31,14 @@ public class CartServiceImpl implements CartService {
 
     public Cart findByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Cart not found"));
     }
 
     public void save(Cart cart) {
         cartRepository.save(cart);
     }
 
-    public boolean addToCart(User user, Long productVariantId, int quantity) {
+    public void addToCart(User user, Long productVariantId, int quantity) {
         Cart cart = user.getCart();
 
         if (cart == null) {
@@ -49,11 +48,11 @@ public class CartServiceImpl implements CartService {
         }
 
         ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found"));
 
         int currentReservedQuantity = getCurrentReservedQuantity(productVariant);
         if (productVariant.getQuantity() - currentReservedQuantity < quantity) {
-            return false;
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Not enough stock available.");
         }
 
         CartItem existingCartItem = cart.getCartItems().stream()
@@ -73,13 +72,12 @@ public class CartServiceImpl implements CartService {
         productVariant.setReservedQuantity(currentReservedQuantity + quantity);
         productVariantRepository.save(productVariant);
         cartRepository.save(cart);
-        return true;
     }
 
     @Transactional
-    public ResponseEntity<String> removeItemsFromCart(User user, List<Long> cartItemIds) {
+    public void removeItemsFromCart(User user, List<Long> cartItemIds) {
         Cart cart = cartRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found"));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Cart not found"));
 
         List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
 
@@ -88,7 +86,7 @@ public class CartServiceImpl implements CartService {
                 .collect(Collectors.toList());
 
         if (userCartItems.size() != cartItems.size()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Some items do not belong to the user.");
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Some items do not belong to the user.");
         }
 
         userCartItems.forEach(cartItem -> {
@@ -100,12 +98,11 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().removeAll(userCartItems);
         cartItemRepository.deleteAll(userCartItems);
         cartRepository.save(cart);
-        return ResponseEntity.ok("Items removed successfully.");
     }
 
     public Integer getAvailableQuantity(Long productVariantId) {
         ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                .orElseThrow(() -> new RuntimeException("Product variant not found"));
+                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found"));
 
         return productVariant.getQuantity() - getCurrentReservedQuantity(productVariant);
     }

@@ -2,9 +2,8 @@ package com.furkan.ecommerce.controller;
 
 import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.dto.ProductDetailDTO;
-import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.ProductService;
-import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,23 +25,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        try {
-            ProductDetailDTO productDetailDTO = productService.getProductById(id);
-            return ResponseEntity.ok(productDetailDTO);
-        } catch (EntityNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
-        }
+    public ResponseEntity<ProductDetailDTO> getProductById(@PathVariable Long id) {
+        ProductDetailDTO productDetailDTO = productService.getProductById(id);
+        return ResponseEntity.ok(productDetailDTO);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchProducts(@RequestParam String query) {
-        try {
-            List<ProductDetailDTO> products = productService.searchProducts(query);
-            return ResponseEntity.ok(products);
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse(ex.getMessage()));
-        }
+    public ResponseEntity<List<ProductDetailDTO>> searchProducts(@RequestParam String query) {
+        List<ProductDetailDTO> products = productService.searchProducts(query);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/category/{categoryId}")
@@ -53,9 +44,12 @@ public class ProductController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> addProduct(@RequestBody ProductDetailDTO productDetailDTO) {
+    public ResponseEntity<ProductDetailDTO> addProduct(@Valid @RequestBody ProductDetailDTO productDetailDTO) {
         ProductDetailDTO savedProduct = productService.addProduct(productDetailDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
+
+    //TODO: product update
+    //TODO: product delete
 }
 

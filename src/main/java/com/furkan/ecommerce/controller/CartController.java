@@ -1,17 +1,19 @@
 package com.furkan.ecommerce.controller;
 
+import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.payload.request.AddToCartRequest;
 import com.furkan.ecommerce.payload.response.AvailableQuantityResponse;
 import com.furkan.ecommerce.payload.response.CartAddResponse;
+import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.CartService;
 import com.furkan.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,10 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<CartAddResponse> addToCart(@AuthenticationPrincipal UserDetails userDetails,
-                                            @RequestBody List<AddToCartRequest> addToCartRequests) {
+                                                     @RequestBody List<AddToCartRequest> addToCartRequests) {
+        if (addToCartRequests == null || addToCartRequests.isEmpty()) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "No items to add to cart.");
+        }
         String username = userDetails.getUsername();
         User user = userService.getUserByUsername(username);
 
@@ -37,10 +42,10 @@ public class CartController {
         List<AvailableQuantityResponse> availableStock = new ArrayList<>();
 
         for (AddToCartRequest request : addToCartRequests) {
-            boolean reservationSuccess = cartService.addToCart(user, request.getProductVariantId(), request.getQuantity());
-            if (reservationSuccess) {
+            try {
+                cartService.addToCart(user, request.getProductVariantId(), request.getQuantity());
                 successfulAdditions.add(request.getProductVariantId());
-            } else {
+            } catch (CustomException ex) {
                 failedAdditions.add(request.getProductVariantId());
                 int availableQuantityForProduct = cartService.getAvailableQuantity(request.getProductVariantId());
                 availableStock.add(new AvailableQuantityResponse(request.getProductVariantId(), availableQuantityForProduct));
@@ -56,17 +61,12 @@ public class CartController {
     }
 
     @DeleteMapping("/items")
-    public ResponseEntity<String> removeItemsFromCart(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<MessageResponse> removeItemsFromCart(@AuthenticationPrincipal UserDetails userDetails,
                                                     @RequestBody List<Long> cartItemIds) {
         String username = userDetails.getUsername();
         User user = userService.getUserByUsername(username);
-        ResponseEntity<String> response;
 
-        try {
-            response = cartService.removeItemsFromCart(user, cartItemIds);
-        } catch (ResponseStatusException ex) {
-            return ResponseEntity.status(ex.getStatusCode()).body(ex.getReason());
-        }
-        return response;
+        cartService.removeItemsFromCart(user, cartItemIds);
+        return ResponseEntity.ok(new MessageResponse("Items removed successfully."));
     }
 }

@@ -13,7 +13,7 @@ public interface ProductVariantService {
                                                   Long colorId, Long variantId,
                                                   Long productTypeId, Long brandId, Long brandModelId);
 
-    void deceraseProductVariantsQuantity(List<OrderItem> orderItems);
+    void decreaseProductVariantsQuantity(List<OrderItem> orderItems);
 
     void increaseProductVariantsQuantity(List<OrderItem> orderItems);
 }
