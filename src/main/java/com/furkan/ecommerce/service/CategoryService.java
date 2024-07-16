@@ -1,29 +1,15 @@
 package com.furkan.ecommerce.service;
 
 import com.furkan.ecommerce.model.Category;
-import com.furkan.ecommerce.repository.CategoryRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class CategoryService {
+public interface CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    Category getCategoryById(Long categoryId);
 
-    public Category getCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId));
-    }
+    List<Category> getCategoriesByParentId(Long parentId);
 
-    public List<Category> getCategoriesByParentId(Long parentId) {
-        return categoryRepository.findByParentCategoryId(parentId);
-    }
+    List<Category> getAllSubCategories(Long categoryId);
 
-    public List<Category> getAllSubCategories(Long categoryId) {
-        return getCategoriesByParentId(categoryId);
-    }
 }
