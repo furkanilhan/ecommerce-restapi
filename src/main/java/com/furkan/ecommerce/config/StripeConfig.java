@@ -1,4 +1,4 @@
-package com.furkan.ecommerce.config.security;
+package com.furkan.ecommerce.config;
 
 import com.stripe.Stripe;
 import jakarta.annotation.PostConstruct;

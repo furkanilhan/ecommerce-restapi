@@ -1,4 +1,4 @@
-package com.furkan.ecommerce.config.security.service;
+package com.furkan.ecommerce.config.service;
 
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.service.UserService;

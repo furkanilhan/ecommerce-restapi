@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.furkan.ecommerce.config.security.jwt.JwtAuthEntryPoint;
-import com.furkan.ecommerce.config.security.service.UserDetailsServiceImpl;
+import com.furkan.ecommerce.config.service.UserDetailsServiceImpl;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;

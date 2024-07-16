@@ -1,6 +1,6 @@
 package com.furkan.ecommerce.config.security.jwt;
 
-import com.furkan.ecommerce.config.security.service.UserDetailsImpl;
+import com.furkan.ecommerce.config.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;

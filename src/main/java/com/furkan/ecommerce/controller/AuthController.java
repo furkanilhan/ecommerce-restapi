@@ -10,7 +10,7 @@ import com.furkan.ecommerce.payload.response.JwtResponse;
 import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.repository.RoleRepository;
 import com.furkan.ecommerce.config.security.jwt.JwtUtils;
-import com.furkan.ecommerce.config.security.service.UserDetailsImpl;
+import com.furkan.ecommerce.config.service.UserDetailsImpl;
 import com.furkan.ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

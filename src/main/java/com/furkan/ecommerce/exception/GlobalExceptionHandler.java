@@ -16,7 +16,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<MessageResponse> handleGlobalException(Exception ex) {
         log.error("Internal Server Error: ", ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Internal Server Error"));
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<MessageResponse> handleNullPointerException(NullPointerException ex) {
+        log.error("NullPointerException occurred: ", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MessageResponse("Unexpected error occurred."));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -31,5 +37,4 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(new MessageResponse(ex.getMessage()));
     }
-
 }

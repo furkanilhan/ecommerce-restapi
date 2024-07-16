@@ -1,6 +1,6 @@
 package com.furkan.ecommerce.config.security.jwt;
 
-import com.furkan.ecommerce.config.security.service.UserDetailsServiceImpl;
+import com.furkan.ecommerce.config.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
