@@ -11,6 +11,7 @@ import com.furkan.ecommerce.repository.ProductVariantRepository;
 import com.furkan.ecommerce.service.CategoryService;
 import com.furkan.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -115,10 +116,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     public void deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
+        try {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
 
-        product.setDeleted(true);
-        productRepository.save(product);
+            product.setDeleted(true);
+            product.getProductVariants().forEach(productVariant -> productVariant.setDeleted(true));
+
+            productVariantRepository.saveAll(product.getProductVariants());
+            productRepository.save(product);
+        } catch (DataAccessException ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting product with id: " + productId);
+        } catch (Exception ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error deleting product with id: " + productId);
+        }
     }
 }
