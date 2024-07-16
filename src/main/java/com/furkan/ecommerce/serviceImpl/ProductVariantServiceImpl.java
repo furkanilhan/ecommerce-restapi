@@ -44,6 +44,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
             cq.select(root);
 
             List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("isDeleted"), false));
             if (filterDTO.getMinQuantity() != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("quantity"), filterDTO.getMinQuantity()));
             }
