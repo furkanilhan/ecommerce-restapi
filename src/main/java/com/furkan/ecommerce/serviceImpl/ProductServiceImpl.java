@@ -40,13 +40,15 @@ public class ProductServiceImpl implements ProductService {
     private DTOToEntity dtoToEntity;
 
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
-        Page<Product> productsPage = productRepository.findAll(pageable);
+        Page<Product> productsPage = productRepository.findByIsDeletedFalse(pageable);
         return productsPage.map(entityToDTO::toProductDTO);
     }
 
     public ProductDetailDTO getProductById(Long id) {
-        Product product =  productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + id));
+        Product product =  productRepository.findByIdAndIsDeletedFalse(id);
+        if (product == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
+        }
         return entityToDTO.toProductDetailDTO(product);
     }
 
@@ -60,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
         subCategories.add(categoryService.getCategoryById(categoryId));
         List<Long> categoryIds = subCategories.stream().map(Category::getId).collect(Collectors.toList());
 
-        Page<Product> products = productRepository.findByCategoryIdIn(categoryIds, pageable);
+        Page<Product> products = productRepository.findByCategoryIdInAndNotDeleted(categoryIds, pageable);
         return products.map(entityToDTO::toProductDTO);
     }
 

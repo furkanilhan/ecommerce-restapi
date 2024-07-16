@@ -21,16 +21,27 @@
             <column name="first_name" type="VARCHAR(255)"/>
             <column name="last_name" type="VARCHAR(255)"/>
             <column name="enabled" type="boolean" defaultValue="true"/>
-            <column name="is_deleted" type="boolean" defaultValue="false">
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="user"
+                baseColumnNames="created_by"
+                constraintName="fk_user_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user"
+                baseColumnNames="updated_by"
+                constraintName="fk_user_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

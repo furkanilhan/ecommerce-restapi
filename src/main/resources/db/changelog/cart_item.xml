@@ -19,19 +19,15 @@
             <column name="quantity" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_deleted" type="boolean" defaultValue="false">
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
-        <!-- Foreign key constraint for cart_id -->
         <addForeignKeyConstraint
                 baseTableName="cart_item"
                 baseColumnNames="cart_id"
@@ -39,12 +35,26 @@
                 referencedColumnNames="id"
                 constraintName="fk_cart_item_cart"/>
 
-        <!-- Foreign key constraint for product_variant_id -->
         <addForeignKeyConstraint
                 baseTableName="cart_item"
                 baseColumnNames="product_variant_id"
                 referencedTableName="product_variant"
                 referencedColumnNames="id"
                 constraintName="fk_cart_item_product_variant"/>
+
+        <addForeignKeyConstraint
+                baseTableName="cart_item"
+                baseColumnNames="created_by"
+                constraintName="fk_cart_item_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="cart_item"
+                baseColumnNames="updated_by"
+                constraintName="fk_cart_item_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
     </changeSet>
 </databaseChangeLog>

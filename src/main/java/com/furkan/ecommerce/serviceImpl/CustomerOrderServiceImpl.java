@@ -103,7 +103,6 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
         orderItems.forEach(item -> {
             item.setDeleted(true);
-            item.setDeletedAt(new Timestamp(System.currentTimeMillis()));
         });
 
         customerOrder.setStatus(OrderStatus.CANCELLED);

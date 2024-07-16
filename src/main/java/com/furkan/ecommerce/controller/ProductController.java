@@ -70,7 +70,5 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.ok(new MessageResponse("Product deleted successfully"));
     }
-
-    //TODO: product delete
 }
 

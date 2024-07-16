@@ -27,16 +27,13 @@
             <column name="price" type="decimal(10,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_deleted" type="boolean" defaultValue="false">
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
         <!-- Foreign key constraint for product_id -->
@@ -58,6 +55,20 @@
                                  constraintName="fk_product_variant_variant"
                                  referencedTableName="variant"
                                  referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="product_variant"
+                baseColumnNames="created_by"
+                constraintName="fk_product_variant_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="product_variant"
+                baseColumnNames="updated_by"
+                constraintName="fk_product_variant_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="create-product_variant-indexes" author="fuilhan">

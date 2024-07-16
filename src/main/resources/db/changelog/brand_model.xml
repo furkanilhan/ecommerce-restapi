@@ -20,10 +20,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="TIMESTAMP"/>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="brand_model"
@@ -31,6 +30,20 @@
                                  constraintName="fk_brand_model_brand"
                                  referencedTableName="brand"
                                  referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="brand_model"
+                baseColumnNames="created_by"
+                constraintName="fk_brand_model_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="brand_model"
+                baseColumnNames="updated_by"
+                constraintName="fk_brand_model_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
     </changeSet>
 
     <!-- Insert Sample Data into brand_model Table -->

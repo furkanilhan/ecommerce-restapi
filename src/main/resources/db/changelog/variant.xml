@@ -18,13 +18,26 @@
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="TIMESTAMP"/>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
         <addUniqueConstraint tableName="variant" columnNames="variant, value"/>
+
+        <addForeignKeyConstraint
+                baseTableName="variant"
+                baseColumnNames="created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_variant_created_by"/>
+
+        <addForeignKeyConstraint
+                baseTableName="variant"
+                baseColumnNames="updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                constraintName="fk_variant_updated_by"/>
     </changeSet>
     <changeSet id="insert-variant-data" author="fuilhan">
         <insert tableName="variant">

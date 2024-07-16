@@ -26,19 +26,15 @@
             <column name="brand_model_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_deleted" type="boolean" defaultValue="false">
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
-        <!-- create foreign key for category_id -->
         <addForeignKeyConstraint
                 baseTableName="product"
                 baseColumnNames="category_id"
@@ -63,6 +59,21 @@
                                  constraintName="fk_product_brand_model_id"
                                  referencedTableName="brand_model"
                                  referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="product"
+                baseColumnNames="created_by"
+                constraintName="fk_product_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="product"
+                baseColumnNames="updated_by"
+                constraintName="fk_product_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
     </changeSet>
 
     <changeSet id="create-product_variant-indexes" author="fuilhan">

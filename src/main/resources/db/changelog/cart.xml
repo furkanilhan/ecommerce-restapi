@@ -13,24 +13,34 @@
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_deleted" type="boolean" defaultValue="false">
+            <column name="is_deleted" type="BOOLEAN" defaultValue="false">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_by" type="BIGINT"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="deleted_at" type="timestamp">
-                <constraints nullable="true"/>
-            </column>
-            <column name="created_by" type="VARCHAR(255)"/>
-            <column name="updated_by" type="VARCHAR(255)"/>
+            <column name="updated_by" type="BIGINT"/>
         </createTable>
 
-        <!-- Foreign key constraint for user_id -->
         <addForeignKeyConstraint
                 baseTableName="cart"
                 baseColumnNames="user_id"
                 referencedTableName="user"
                 referencedColumnNames="id"
                 constraintName="fk_cart_user"/>
+
+        <addForeignKeyConstraint
+                baseTableName="cart"
+                baseColumnNames="created_by"
+                constraintName="fk_cart_created_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="cart"
+                baseColumnNames="updated_by"
+                constraintName="fk_cart_updated_by"
+                referencedTableName="user"
+                referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
