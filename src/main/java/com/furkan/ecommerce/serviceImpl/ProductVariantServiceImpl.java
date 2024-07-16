@@ -35,6 +35,15 @@ public class ProductVariantServiceImpl implements ProductVariantService {
     private EntityToDTO entityToDTO;
 
     @Override
+    public ProductVariantDTO getProductVariantById(Long id) {
+        ProductVariant productVariant =  productVariantRepository.findByIdAndIsDeletedFalse(id);
+        if (productVariant == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product variant not found with id: " + id);
+        }
+        return entityToDTO.toProductVariantDTO(productVariant);
+    }
+
+    @Override
     public Page<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO, Pageable pageable) {
         try {
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();

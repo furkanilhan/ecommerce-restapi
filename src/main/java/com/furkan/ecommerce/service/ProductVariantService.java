@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ProductVariantService {
 
+    ProductVariantDTO getProductVariantById(Long id);
+
     Page<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO, Pageable pageable);
 
     void decreaseProductVariantsQuantity(List<OrderItem> orderItems);
