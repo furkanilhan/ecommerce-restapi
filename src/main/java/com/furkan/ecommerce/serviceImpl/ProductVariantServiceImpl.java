@@ -11,6 +11,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -104,6 +105,22 @@ public class ProductVariantServiceImpl implements ProductVariantService {
             return new PageImpl<>(resultDTOs, pageable, resultList.size());
         } catch (Exception ex) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while filtering product variants. Please try again later.", ex);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteProductVariant(Long productVariantId) {
+        try {
+            ProductVariant productVariant = productVariantRepository.findById(productVariantId)
+                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found with id: " + productVariantId));
+
+            productVariant.setDeleted(true);
+            productVariantRepository.save(productVariant);
+        } catch (DataAccessException ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting product variant with id: " + productVariantId);
+        } catch (Exception ex) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error deleting product variant with id: " + productVariantId);
         }
     }
 

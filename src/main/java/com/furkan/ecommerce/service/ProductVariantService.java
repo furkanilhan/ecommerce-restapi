@@ -14,6 +14,8 @@ public interface ProductVariantService {
 
     Page<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO, Pageable pageable);
 
+    void deleteProductVariant(Long productVariantId);
+
     void decreaseProductVariantsQuantity(List<OrderItem> orderItems);
 
     void increaseProductVariantsQuantity(List<OrderItem> orderItems);
