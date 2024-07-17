@@ -1,10 +1,7 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.exception.CustomException;
-import com.furkan.ecommerce.model.Cart;
-import com.furkan.ecommerce.model.CartItem;
-import com.furkan.ecommerce.model.ProductVariant;
-import com.furkan.ecommerce.model.User;
+import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.CartItemRepository;
 import com.furkan.ecommerce.repository.CartRepository;
 import com.furkan.ecommerce.repository.ProductVariantRepository;
@@ -29,15 +26,18 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private ProductVariantRepository productVariantRepository;
 
+    @Override
     public Cart findByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Cart not found"));
     }
 
+    @Override
     public void save(Cart cart) {
         cartRepository.save(cart);
     }
 
+    @Override
     public void addToCart(User user, Long productVariantId, int quantity) {
         Cart cart = user.getCart();
 
@@ -76,6 +76,7 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
+    @Override
     @Transactional
     public void removeItemsFromCart(User user, List<Long> cartItemIds) {
         Cart cart = cartRepository.findByUserId(user.getId())
@@ -101,11 +102,16 @@ public class CartServiceImpl implements CartService {
             productVariantRepository.save(productVariant);
         });
 
-        cart.getCartItems().removeAll(userCartItems);
-        cartItemRepository.deleteAll(userCartItems);
-        cartRepository.save(cart);
+        try {
+            cart.getCartItems().removeAll(userCartItems);
+            cartItemRepository.deleteAll(userCartItems);
+            cartRepository.save(cart);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Remove items failed unexpectedly.", e);
+        }
     }
 
+    @Override
     public Integer getAvailableQuantity(Long productVariantId) {
         ProductVariant productVariant = productVariantRepository.findByIdAndIsDeletedFalse(productVariantId);
         if (productVariant == null) {

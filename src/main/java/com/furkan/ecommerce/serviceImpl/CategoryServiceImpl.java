@@ -16,15 +16,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Override
     public Category getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Category not found with id: " + categoryId));
     }
 
+    @Override
     public List<Category> getCategoriesByParentId(Long parentId) {
         return categoryRepository.findByParentCategoryId(parentId);
     }
 
+    @Override
     public List<Category> getAllSubCategories(Long categoryId) {
         return getCategoriesByParentId(categoryId);
     }
