@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AvailableQuantityResponse {
     private Long productVariantId;
-    private Integer quantity;
+    private Object quantity;
 }

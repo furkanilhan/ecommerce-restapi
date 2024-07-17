@@ -5,7 +5,6 @@ import com.furkan.ecommerce.enums.RoleName;
 import com.furkan.ecommerce.model.*;
 import org.mapstruct.*;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,11 +22,14 @@ public interface DTOToEntity {
         user.setRoles(roles);
     }
 
-    @Mappings({
-            @Mapping(target = "category", source = "category"),
-            @Mapping(target = "productVariants", source = "productVariants")
-    })
     Product toProduct(ProductDetailDTO productDetailDTO);
+
+    @AfterMapping
+    default void linkProduct(@MappingTarget Product product) {
+        if (product.getProductVariants() != null) {
+            product.getProductVariants().forEach(variant -> variant.setProduct(product));
+        }
+    }
 
     Category toCategory(CategoryDTO categoryDTO);
 
@@ -41,25 +43,9 @@ public interface DTOToEntity {
 
     BrandModel toBrandModel(BrandModelDTO brandModelDTO);
 
-    @Mappings({
-            @Mapping(target = "product", ignore = true),
-            @Mapping(target = "color", source = "color"),
-            @Mapping(target = "variant", source = "variant")
-    })
     ProductVariant toProductVariant(ProductVariantDTO productVariantDTO);
 
-    List<ProductVariant> toProductVariants(List<ProductVariantDTO> productVariantDTOs);
-
-    @AfterMapping
-    default void linkProduct(@MappingTarget Product product) {
-        if (product.getProductVariants() != null) {
-            product.getProductVariants().forEach(variant -> variant.setProduct(product));
-        }
-    }
-
-    @Mapping(target = "user", ignore = true)
     Cart toCart(CartDTO cartDTO);
 
-    @Mapping(target = "cart", ignore = true)
     CartItem toCartItem(CartItemDTO cartItemDTO);
 }

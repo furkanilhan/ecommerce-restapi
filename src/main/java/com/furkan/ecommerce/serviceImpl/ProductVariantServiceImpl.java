@@ -3,6 +3,7 @@ package com.furkan.ecommerce.serviceImpl;
 import com.furkan.ecommerce.dto.ProductVariantDTO;
 import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.exception.CustomException;
+import com.furkan.ecommerce.mapper.DTOToEntity;
 import com.furkan.ecommerce.mapper.EntityToDTO;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.ProductVariantRepository;
@@ -11,7 +12,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +34,9 @@ public class ProductVariantServiceImpl implements ProductVariantService {
 
     @Autowired
     private EntityToDTO entityToDTO;
+
+    @Autowired
+    private DTOToEntity dtoToEntity;
 
     @Override
     public ProductVariantDTO getProductVariantById(Long id) {
@@ -108,17 +111,28 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         }
     }
 
+    @Transactional
+    public ProductVariantDTO addProductVariant(ProductVariantDTO productVariantDTO) {
+        try {
+            ProductVariant productVariant = dtoToEntity.toProductVariant(productVariantDTO);
+            productVariant = productVariantRepository.save(productVariant);
+            return entityToDTO.toProductVariantDTO(productVariant);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product variant creation failed unexpectedly.", e);
+        }
+    }
+
     @Override
     @Transactional
     public void deleteProductVariant(Long productVariantId) {
-        try {
-            ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found with id: " + productVariantId));
+        ProductVariant productVariant = productVariantRepository.findByIdAndIsDeletedFalse(productVariantId);
 
+        if (productVariant == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product variant not found with id: " + productVariantId);
+        }
+        try {
             productVariant.setDeleted(true);
             productVariantRepository.save(productVariant);
-        } catch (DataAccessException ex) {
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting product variant with id: " + productVariantId);
         } catch (Exception ex) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error deleting product variant with id: " + productVariantId);
         }

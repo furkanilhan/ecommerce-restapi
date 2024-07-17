@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductVariantDTO {
     private Long id;
-    private Long productId;
+    private ProductDTO product;
     private ColorDTO color;
     private VariantDTO variant;
     private Integer quantity;

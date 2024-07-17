@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class CartItemDTO {
 
     private Long id;
-    private Long productVariantId;
+    private ProductVariantDTO productVariant;
     private String productName;
     private int quantity;
     private BigDecimal price;

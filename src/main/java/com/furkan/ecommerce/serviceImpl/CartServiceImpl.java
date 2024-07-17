@@ -47,8 +47,10 @@ public class CartServiceImpl implements CartService {
             user.setCart(cart);
         }
 
-        ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found"));
+        ProductVariant productVariant = productVariantRepository.findByIdAndIsDeletedFalse(productVariantId);
+        if (productVariant == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, "Product variant not found: " + productVariantId);
+        }
 
         int currentReservedQuantity = getCurrentReservedQuantity(productVariant);
         if (productVariant.getQuantity() - currentReservedQuantity < quantity) {
@@ -81,6 +83,10 @@ public class CartServiceImpl implements CartService {
 
         List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
 
+        if (cartItems.isEmpty()) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Cart items not found.");
+        }
+
         List<CartItem> userCartItems = cartItems.stream()
                 .filter(cartItem -> cartItem.getCart().getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
@@ -101,9 +107,10 @@ public class CartServiceImpl implements CartService {
     }
 
     public Integer getAvailableQuantity(Long productVariantId) {
-        ProductVariant productVariant = productVariantRepository.findById(productVariantId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product variant not found"));
-
+        ProductVariant productVariant = productVariantRepository.findByIdAndIsDeletedFalse(productVariantId);
+        if (productVariant == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product variant not found: " + productVariantId);
+        }
         return productVariant.getQuantity() - getCurrentReservedQuantity(productVariant);
     }
 

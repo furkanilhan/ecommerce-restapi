@@ -11,8 +11,6 @@ import com.furkan.ecommerce.repository.ProductVariantRepository;
 import com.furkan.ecommerce.service.CategoryService;
 import com.furkan.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -73,8 +71,6 @@ public class ProductServiceImpl implements ProductService {
             Product product = dtoToEntity.toProduct(productDetailDTO);
             product = productRepository.save(product);
             return entityToDTO.toProductDetailDTO(product);
-        } catch (DataIntegrityViolationException e) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "Product creation failed: " + e.getRootCause().getMessage(), e);
         } catch (Exception e) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product creation failed unexpectedly.", e);
         }
@@ -82,33 +78,32 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     public ProductDetailDTO updateProduct(Long productId, ProductDetailDTO updatedProductDTO) {
+        Product product = productRepository.findByIdAndIsDeletedFalse(productId);
+
+        if (product == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId);
+        }
+        product.setName(updatedProductDTO.getName());
+        product.setDescription(updatedProductDTO.getDescription());
+
+        Category category = new Category();
+        category.setId(updatedProductDTO.getCategory().getId());
+        product.setCategory(category);
+
+        ProductType productType = new ProductType();
+        productType.setId(updatedProductDTO.getProductType().getId());
+        product.setProductType(productType);
+
+        Brand brand = new Brand();
+        brand.setId(updatedProductDTO.getBrand().getId());
+        product.setBrand(brand);
+
+        BrandModel brandModel = new BrandModel();
+        brandModel.setId(updatedProductDTO.getBrandModel().getId());
+        product.setBrandModel(brandModel);
         try {
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
-
-            product.setName(updatedProductDTO.getName());
-            product.setDescription(updatedProductDTO.getDescription());
-
-            Category category = new Category();
-            category.setId(updatedProductDTO.getCategory().getId());
-            product.setCategory(category);
-
-            ProductType productType = new ProductType();
-            productType.setId(updatedProductDTO.getProductType().getId());
-            product.setProductType(productType);
-
-            Brand brand = new Brand();
-            brand.setId(updatedProductDTO.getBrand().getId());
-            product.setBrand(brand);
-
-            BrandModel brandModel = new BrandModel();
-            brandModel.setId(updatedProductDTO.getBrandModel().getId());
-            product.setBrandModel(brandModel);
-
             Product updatedProduct = productRepository.save(product);
             return entityToDTO.toProductDetailDTO(updatedProduct);
-        } catch (DataIntegrityViolationException e) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "Product update failed: " + e.getRootCause().getMessage(), e);
         } catch (Exception e) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product update failed unexpectedly.", e);
         }
@@ -116,19 +111,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     public void deleteProduct(Long productId) {
+        Product product = productRepository.findByIdAndIsDeletedFalse(productId);
+
+        if (product == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId);
+        }
+
+        product.setDeleted(true);
+        product.getProductVariants().forEach(productVariant -> productVariant.setDeleted(true));
+
         try {
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + productId));
-
-            product.setDeleted(true);
-            product.getProductVariants().forEach(productVariant -> productVariant.setDeleted(true));
-
             productVariantRepository.saveAll(product.getProductVariants());
             productRepository.save(product);
-        } catch (DataAccessException ex) {
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting product with id: " + productId);
         } catch (Exception ex) {
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error deleting product with id: " + productId);
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Error deleting product with id: " + productId);
         }
     }
 }

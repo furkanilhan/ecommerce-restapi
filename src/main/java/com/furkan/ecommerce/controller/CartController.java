@@ -48,7 +48,12 @@ public class CartController {
                 successfulAdditions.add(request.getProductVariantId());
             } catch (CustomException ex) {
                 failedAdditions.add(request.getProductVariantId());
-                int availableQuantityForProduct = cartService.getAvailableQuantity(request.getProductVariantId());
+                Object availableQuantityForProduct;
+                try {
+                    availableQuantityForProduct = cartService.getAvailableQuantity(request.getProductVariantId());
+                } catch (CustomException e) {
+                    availableQuantityForProduct = e.getMessage();
+                }
                 availableStock.add(new AvailableQuantityResponse(request.getProductVariantId(), availableQuantityForProduct));
             }
         }
