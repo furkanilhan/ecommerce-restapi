@@ -8,6 +8,7 @@ import com.furkan.ecommerce.payload.response.CartAddResponse;
 import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.CartService;
 import com.furkan.ecommerce.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity<CartAddResponse> addToCart(@AuthenticationPrincipal UserDetails userDetails,
-                                                     @RequestBody List<AddToCartRequest> addToCartRequests) {
+                                                     @Valid @RequestBody List<AddToCartRequest> addToCartRequests) {
         if (addToCartRequests == null || addToCartRequests.isEmpty()) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "No items to add to cart.");
         }
