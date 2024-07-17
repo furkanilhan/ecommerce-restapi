@@ -26,14 +26,17 @@ public class UserDetailsImpl implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private User user;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities, User user) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.user = user;
     }
 
     public static UserDetailsImpl build(User user) {
@@ -45,7 +48,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                authorities);
+                authorities,
+                user);
     }
 
     @Override
