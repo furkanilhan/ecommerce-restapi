@@ -38,11 +38,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private DTOToEntity dtoToEntity;
 
+    @Override
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
         Page<Product> productsPage = productRepository.findByIsDeletedFalse(pageable);
         return productsPage.map(entityToDTO::toProductDTO);
     }
 
+    @Override
     public ProductDetailDTO getProductById(Long id) {
         Product product =  productRepository.findByIdAndIsDeletedFalse(id);
         if (product == null) {
@@ -51,11 +53,13 @@ public class ProductServiceImpl implements ProductService {
         return entityToDTO.toProductDetailDTO(product);
     }
 
+    @Override
     public Page<ProductDetailDTO> searchProducts(String queryPart, Pageable pageable) {
         Page<Product> products = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart, pageable);
         return products.map(entityToDTO::toProductDetailDTO);
     }
 
+    @Override
     public Page<ProductDTO> getProductsByCategory(Long categoryId, Pageable pageable) {
         List<Category> subCategories = categoryService.getAllSubCategories(categoryId);
         subCategories.add(categoryService.getCategoryById(categoryId));
@@ -65,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
         return products.map(entityToDTO::toProductDTO);
     }
 
+    @Override
     @Transactional
     public ProductDetailDTO addProduct(ProductDetailDTO productDetailDTO) {
         try {
@@ -76,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
     @Transactional
     public ProductDetailDTO updateProduct(Long productId, ProductDetailDTO updatedProductDTO) {
         Product product = productRepository.findByIdAndIsDeletedFalse(productId);
@@ -109,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
     @Transactional
     public void deleteProduct(Long productId) {
         Product product = productRepository.findByIdAndIsDeletedFalse(productId);

@@ -1,5 +1,6 @@
 package com.furkan.ecommerce.controller;
 
+import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.dto.ProductVariantDTO;
 import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.payload.response.MessageResponse;
@@ -55,17 +56,25 @@ public class ProductVariantController {
         return productVariantService.filterProductVariants(filterDTO, pageable);
     }
 
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ProductVariantDTO> addProductVariant(@Valid @RequestBody ProductVariantDTO productVariantDTO) {
+        ProductVariantDTO savedProductVariant = productVariantService.addProductVariant(productVariantDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductVariant);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ProductVariantDTO> updateProductVariant(@Valid @PathVariable Long id, @RequestBody ProductVariantDTO productVariantDTO) {
+        ProductVariantDTO savedProduct = productVariantService.updateProductVariant(id, productVariantDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<MessageResponse> deleteProductVariant(@Valid @PathVariable Long id) {
         productVariantService.deleteProductVariant(id);
         return ResponseEntity.ok(new MessageResponse("Product variant deleted successfully"));
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<ProductVariantDTO> addProductVariant(@Valid @RequestBody ProductVariantDTO productVariantDTO) {
-        ProductVariantDTO savedProductVariant = productVariantService.addProductVariant(productVariantDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductVariant);
     }
 
     //TODO: productVariant güncelleme

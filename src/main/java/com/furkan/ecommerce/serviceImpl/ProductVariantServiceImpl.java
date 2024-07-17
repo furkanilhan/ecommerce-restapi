@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.dto.ProductVariantDTO;
+import com.furkan.ecommerce.dto.ProductVariantDTO;
 import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.DTOToEntity;
@@ -11,6 +12,7 @@ import com.furkan.ecommerce.service.ProductVariantService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -90,7 +92,6 @@ public class ProductVariantServiceImpl implements ProductVariantService {
                 Join<ProductVariant, Product> productJoin = root.join("product");
                 predicates.add(productJoin.get("brandModel").get("id").in(filterDTO.getBrandModelIds()));
             }
-
             if (!predicates.isEmpty()) {
                 cq.where(predicates.toArray(new Predicate[0]));
             }
@@ -111,6 +112,7 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         }
     }
 
+    @Override
     @Transactional
     public ProductVariantDTO addProductVariant(ProductVariantDTO productVariantDTO) {
         try {
@@ -122,6 +124,35 @@ public class ProductVariantServiceImpl implements ProductVariantService {
         }
     }
 
+    @Override
+    @Transactional
+    public ProductVariantDTO updateProductVariant(Long productVariantId, ProductVariantDTO updatedProductVariantDTO) {
+        ProductVariant productVariant = productVariantRepository.findByIdAndIsDeletedFalse(productVariantId);
+
+        if (productVariant == null) {
+            throw new CustomException(HttpStatus.NOT_FOUND, "Product variant not found with id: " + productVariantId);
+        }
+
+        Color color = new Color();
+        color.setId(updatedProductVariantDTO.getColor().getId());
+        productVariant.setColor(color);
+
+        Variant variant = new Variant();
+        variant.setId(updatedProductVariantDTO.getVariant().getId());
+        productVariant.setVariant(variant);
+
+        productVariant.setQuantity(updatedProductVariantDTO.getQuantity());
+        productVariant.setReservedQuantity(updatedProductVariantDTO.getReservedQuantity());
+        productVariant.setPrice(updatedProductVariantDTO.getPrice());
+
+        try {
+            ProductVariant updatedProductVariant = productVariantRepository.save(productVariant);
+            return entityToDTO.toProductVariantDTO(updatedProductVariant);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product variant update failed unexpectedly.", e);
+        }
+    }
+    
     @Override
     @Transactional
     public void deleteProductVariant(Long productVariantId) {

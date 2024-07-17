@@ -1,5 +1,6 @@
 package com.furkan.ecommerce.service;
 
+import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.dto.ProductVariantDTO;
 import com.furkan.ecommerce.dto.ProductVariantFilterDTO;
 import com.furkan.ecommerce.model.*;
@@ -15,6 +16,8 @@ public interface ProductVariantService {
     Page<ProductVariantDTO> filterProductVariants(ProductVariantFilterDTO filterDTO, Pageable pageable);
 
     ProductVariantDTO addProductVariant(ProductVariantDTO productVariantDTO);
+
+    ProductVariantDTO updateProductVariant(Long productVariantId, ProductVariantDTO updatedProductVariantDTO);
 
     void deleteProductVariant(Long productVariantId);
 
