@@ -1,6 +1,8 @@
 package com.furkan.ecommerce.controller;
 
+import com.furkan.ecommerce.dto.UserDTO;
 import com.furkan.ecommerce.exception.CustomException;
+import com.furkan.ecommerce.mapper.UserMapper;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.payload.request.AddToCartRequest;
 import com.furkan.ecommerce.payload.response.AvailableQuantityResponse;
@@ -29,6 +31,9 @@ public class CartController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @PostMapping("/add")
     public ResponseEntity<CartAddResponse> addToCart(@AuthenticationPrincipal UserDetails userDetails,
                                                      @Valid @RequestBody List<AddToCartRequest> addToCartRequests) {
@@ -36,7 +41,9 @@ public class CartController {
             throw new CustomException(HttpStatus.BAD_REQUEST, "No items to add to cart.");
         }
         String username = userDetails.getUsername();
-        User user = userService.getUserByUsername(username);
+        UserDTO userDTO = userService.getUserByUsername(username);
+        User user = userMapper.toUser(userDTO);
+        userService.getUserByUsername(username);
 
         List<Long> successfulAdditions = new ArrayList<>();
         List<Long> failedAdditions = new ArrayList<>();
@@ -70,7 +77,9 @@ public class CartController {
     public ResponseEntity<MessageResponse> removeItemsFromCart(@AuthenticationPrincipal UserDetails userDetails,
                                                     @RequestBody List<Long> cartItemIds) {
         String username = userDetails.getUsername();
-        User user = userService.getUserByUsername(username);
+        UserDTO userDTO = userService.getUserByUsername(username);
+        User user = userMapper.toUser(userDTO);
+        userService.getUserByUsername(username);
 
         cartService.removeItemsFromCart(user, cartItemIds);
         return ResponseEntity.ok(new MessageResponse("Items removed successfully."));

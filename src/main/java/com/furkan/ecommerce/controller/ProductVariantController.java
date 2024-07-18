@@ -76,6 +76,4 @@ public class ProductVariantController {
         productVariantService.deleteProductVariant(id);
         return ResponseEntity.ok(new MessageResponse("Product variant deleted successfully"));
     }
-
-    //TODO: productVariant güncelleme
 }

@@ -1,5 +1,7 @@
 package com.furkan.ecommerce.config.service;
 
+import com.furkan.ecommerce.dto.UserDTO;
+import com.furkan.ecommerce.mapper.UserMapper;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +16,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByUsername(username);
+        UserDTO userDTO = userService.getUserByUsername(username);
+        User user = userMapper.toUser(userDTO);
 
         return UserDetailsImpl.build(user);
     }

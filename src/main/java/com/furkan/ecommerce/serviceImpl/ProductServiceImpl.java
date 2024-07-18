@@ -3,8 +3,7 @@ package com.furkan.ecommerce.serviceImpl;
 import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.dto.ProductDetailDTO;
 import com.furkan.ecommerce.exception.CustomException;
-import com.furkan.ecommerce.mapper.DTOToEntity;
-import com.furkan.ecommerce.mapper.EntityToDTO;
+import com.furkan.ecommerce.mapper.ProductMapper;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.ProductRepository;
 import com.furkan.ecommerce.repository.ProductVariantRepository;
@@ -33,15 +32,12 @@ public class ProductServiceImpl implements ProductService {
     private CategoryService categoryService;
 
     @Autowired
-    private EntityToDTO entityToDTO;
-
-    @Autowired
-    private DTOToEntity dtoToEntity;
+    private ProductMapper productMapper;
 
     @Override
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
         Page<Product> productsPage = productRepository.findByIsDeletedFalse(pageable);
-        return productsPage.map(entityToDTO::toProductDTO);
+        return productsPage.map(productMapper::toProductDTO);
     }
 
     @Override
@@ -50,13 +46,13 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new CustomException(HttpStatus.NOT_FOUND, "Product not found with id: " + id);
         }
-        return entityToDTO.toProductDetailDTO(product);
+        return productMapper.toProductDetailDTO(product);
     }
 
     @Override
     public Page<ProductDetailDTO> searchProducts(String queryPart, Pageable pageable) {
         Page<Product> products = productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(queryPart, pageable);
-        return products.map(entityToDTO::toProductDetailDTO);
+        return products.map(productMapper::toProductDetailDTO);
     }
 
     @Override
@@ -66,16 +62,16 @@ public class ProductServiceImpl implements ProductService {
         List<Long> categoryIds = subCategories.stream().map(Category::getId).collect(Collectors.toList());
 
         Page<Product> products = productRepository.findByCategoryIdInAndNotDeleted(categoryIds, pageable);
-        return products.map(entityToDTO::toProductDTO);
+        return products.map(productMapper::toProductDTO);
     }
 
     @Override
     @Transactional
     public ProductDetailDTO addProduct(ProductDetailDTO productDetailDTO) {
         try {
-            Product product = dtoToEntity.toProduct(productDetailDTO);
+            Product product = productMapper.toProduct(productDetailDTO);
             product = productRepository.save(product);
-            return entityToDTO.toProductDetailDTO(product);
+            return productMapper.toProductDetailDTO(product);
         } catch (Exception e) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product creation failed unexpectedly.", e);
         }
@@ -109,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
         product.setBrandModel(brandModel);
         try {
             Product updatedProduct = productRepository.save(product);
-            return entityToDTO.toProductDetailDTO(updatedProduct);
+            return productMapper.toProductDetailDTO(updatedProduct);
         } catch (Exception e) {
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "Product update failed unexpectedly.", e);
         }
