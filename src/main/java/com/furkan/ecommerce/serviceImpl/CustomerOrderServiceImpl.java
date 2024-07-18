@@ -88,7 +88,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
                 customerOrderRepository.save(customerOrder);
                 productVariantService.decreaseProductVariantsQuantity(orderItems);
 
-                cart.getCartItems().clear();
+                cart.setCartItems(new ArrayList<>());
                 cartService.save(cart);
 
             } else {
@@ -138,9 +138,6 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
         if (customerOrder.getStatus() != OrderStatus.DELIVERED) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "Cannot return order with status: " + customerOrder.getStatus());
         }
-
-        //TODO: sipariş iade işlemleri
     }
 
 }
-

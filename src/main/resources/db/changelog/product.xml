@@ -82,10 +82,6 @@
             <column name="name"/>
         </createIndex>
 
-        <createIndex indexName="idx_product_description" tableName="product">
-            <column name="description"/>
-        </createIndex>
-
         <createIndex indexName="idx_product_product_type_id" tableName="product">
             <column name="product_type_id"/>
         </createIndex>
@@ -97,6 +93,11 @@
         <createIndex indexName="idx_product_brand_model_id" tableName="product">
             <column name="brand_model_id"/>
         </createIndex>
+    </changeSet>
+    <changeSet context="!test" id="create--decription-index-product" author="fuilhan">
+        <sql >
+            CREATE INDEX idx_product_description ON product USING GIN (to_tsvector('turkish', description));
+        </sql>
     </changeSet>
 
     <!-- insert sample data -->

@@ -1,6 +1,5 @@
 package com.furkan.ecommerce.service;
 
-import com.furkan.ecommerce.dto.UserDTO;
 import com.furkan.ecommerce.dto.UserDetailDTO;
 import com.furkan.ecommerce.model.User;
 import org.springframework.data.domain.Page;

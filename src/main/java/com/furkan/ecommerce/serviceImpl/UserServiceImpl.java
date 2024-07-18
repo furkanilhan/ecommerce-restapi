@@ -1,7 +1,6 @@
 package com.furkan.ecommerce.serviceImpl;
 
 import com.furkan.ecommerce.config.security.jwt.JwtUtils;
-import com.furkan.ecommerce.dto.UserDTO;
 import com.furkan.ecommerce.dto.UserDetailDTO;
 import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.UserMapper;
