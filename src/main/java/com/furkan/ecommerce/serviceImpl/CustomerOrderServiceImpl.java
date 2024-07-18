@@ -1,7 +1,9 @@
 package com.furkan.ecommerce.serviceImpl;
 
+import com.furkan.ecommerce.dto.CustomerOrderDTO;
 import com.furkan.ecommerce.enums.OrderStatus;
 import com.furkan.ecommerce.exception.CustomException;
+import com.furkan.ecommerce.mapper.CustomerOrderMapper;
 import com.furkan.ecommerce.model.*;
 import com.furkan.ecommerce.repository.CustomerOrderRepository;
 import com.furkan.ecommerce.service.*;
@@ -9,6 +11,8 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +43,15 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
 
     @Autowired
     private ProductVariantService productVariantService;
+
+    @Autowired
+    private CustomerOrderMapper customerOrderMapper;
+
+    @Override
+    public Page<CustomerOrderDTO> getAllOrders(Long userId, Pageable pageable) {
+        Page<CustomerOrder> customerOrdersPage = customerOrderRepository.findByIsDeletedFalseAndUserId(userId, pageable);
+        return customerOrdersPage.map(customerOrderMapper::toCustomerOrderDTO);
+    }
 
     @Override
     @Transactional

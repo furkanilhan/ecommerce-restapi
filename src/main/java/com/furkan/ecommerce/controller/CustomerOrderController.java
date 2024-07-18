@@ -1,13 +1,18 @@
 package com.furkan.ecommerce.controller;
 
 import com.furkan.ecommerce.config.service.UserDetailsImpl;
+import com.furkan.ecommerce.dto.CustomerOrderDTO;
+import com.furkan.ecommerce.dto.ProductDTO;
 import com.furkan.ecommerce.dto.UserDetailDTO;
 import com.furkan.ecommerce.mapper.UserMapper;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.payload.response.MessageResponse;
 import com.furkan.ecommerce.service.CustomerOrderService;
 import com.furkan.ecommerce.service.UserService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +30,13 @@ public class CustomerOrderController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @GetMapping
+    public Page<CustomerOrderDTO> getAllOrders(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                                               Pageable pageable) {
+        Long userId = userDetailsImpl.getId();
+        return customerOrderService.getAllOrders(userId, pageable);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<MessageResponse> createOrder(
