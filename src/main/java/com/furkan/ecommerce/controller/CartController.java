@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.controller;
 
-import com.furkan.ecommerce.dto.UserDTO;
+import com.furkan.ecommerce.config.service.UserDetailsImpl;
+import com.furkan.ecommerce.dto.UserDetailDTO;
 import com.furkan.ecommerce.exception.CustomException;
 import com.furkan.ecommerce.mapper.UserMapper;
 import com.furkan.ecommerce.model.User;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,15 +35,14 @@ public class CartController {
     private UserMapper userMapper;
 
     @PostMapping("/add")
-    public ResponseEntity<CartAddResponse> addToCart(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<CartAddResponse> addToCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                      @Valid @RequestBody List<AddToCartRequest> addToCartRequests) {
         if (addToCartRequests == null || addToCartRequests.isEmpty()) {
             throw new CustomException(HttpStatus.BAD_REQUEST, "No items to add to cart.");
         }
-        String username = userDetails.getUsername();
-        UserDTO userDTO = userService.getUserByUsername(username);
-        User user = userMapper.toUser(userDTO);
-        userService.getUserByUsername(username);
+        Long userId = userDetailsImpl.getId();
+        UserDetailDTO userDetailDTO = userService.getUserById(userId);
+        User user = userMapper.toUser(userDetailDTO);
 
         List<Long> successfulAdditions = new ArrayList<>();
         List<Long> failedAdditions = new ArrayList<>();
@@ -74,12 +73,11 @@ public class CartController {
     }
 
     @DeleteMapping("/items")
-    public ResponseEntity<MessageResponse> removeItemsFromCart(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<MessageResponse> removeItemsFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                     @RequestBody List<Long> cartItemIds) {
-        String username = userDetails.getUsername();
-        UserDTO userDTO = userService.getUserByUsername(username);
-        User user = userMapper.toUser(userDTO);
-        userService.getUserByUsername(username);
+        Long userId = userDetailsImpl.getId();
+        UserDetailDTO userDetailDTO = userService.getUserById(userId);
+        User user = userMapper.toUser(userDetailDTO);
 
         cartService.removeItemsFromCart(user, cartItemIds);
         return ResponseEntity.ok(new MessageResponse("Items removed successfully."));

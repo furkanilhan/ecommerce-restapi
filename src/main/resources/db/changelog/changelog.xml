@@ -7,6 +7,7 @@
     <include file="db/changelog/user.xml"/>
     <include file="db/changelog/role.xml"/>
     <include file="db/changelog/user_roles.xml"/>
+    <include file="db/changelog/address.xml"/>
     <include file="db/changelog/category.xml"/>
     <include file="db/changelog/color.xml"/>
     <include file="db/changelog/variant.xml"/>

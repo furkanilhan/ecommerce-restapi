@@ -18,4 +18,8 @@ public class JwtResponse {
         this.username = username;
         this.roles = roles;
     }
+
+    public JwtResponse(String newToken) {
+        this.token = newToken;
+    }
 }

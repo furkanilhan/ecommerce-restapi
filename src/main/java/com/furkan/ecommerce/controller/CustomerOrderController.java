@@ -1,6 +1,7 @@
 package com.furkan.ecommerce.controller;
 
-import com.furkan.ecommerce.dto.UserDTO;
+import com.furkan.ecommerce.config.service.UserDetailsImpl;
+import com.furkan.ecommerce.dto.UserDetailDTO;
 import com.furkan.ecommerce.mapper.UserMapper;
 import com.furkan.ecommerce.model.User;
 import com.furkan.ecommerce.payload.response.MessageResponse;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,10 +28,10 @@ public class CustomerOrderController {
 
     @PostMapping("/create")
     public ResponseEntity<MessageResponse> createOrder(
-            @AuthenticationPrincipal UserDetails userDetails) {
-        String username = userDetails.getUsername();
-        UserDTO userDTO = userService.getUserByUsername(username);
-        User user = userMapper.toUser(userDTO);
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+        Long userId = userDetailsImpl.getId();
+        UserDetailDTO userDetailDTO = userService.getUserById(userId);
+        User user = userMapper.toUser(userDetailDTO);
         customerOrderService.createOrder(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse("Your order has been successfully received."));
     }
