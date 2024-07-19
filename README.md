@@ -36,7 +36,7 @@ This project is developed using Spring Boot 3.3.1, Spring Security 6.3.1, and Ja
    ```
 ### Manual Setup with Maven
 
-1. Ensure that the PostgreSQL database is running. (You can use the command docker-compose up --build -d postgresql.)
+1. Ensure that the PostgreSQL database is running. (You can use the command `docker-compose up --build -d postgresql`.)
 
 2. **Open a terminal in the project directory and run the following commands::**
 
