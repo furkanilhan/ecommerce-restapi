@@ -13,6 +13,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  ecommerce-app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/ecommerce
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
 volumes:
   pgdata:
     driver: local

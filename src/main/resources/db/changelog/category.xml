@@ -49,31 +49,57 @@
     <changeSet id="insert-category-data" author="fuilhan">
         <insert tableName="category">
             <column name="name" value="Moda"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
             <column name="name" value="Elektronik"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
             <column name="name" value="Telefon"/>
             <column name="parent_id" value="2"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
             <column name="name" value="Erkek"/>
             <column name="parent_id" value="1"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="category">
             <column name="name" value="Kadın"/>
             <column name="parent_id" value="1"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Bilgisayar"/>
+            <column name="parent_id" value="2"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Tablet"/>
+            <column name="parent_id" value="2"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Ayakkabı"/>
+            <column name="parent_id" value="1"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Kış Kıyafetleri"/>
+            <column name="parent_id" value="1"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Kadın Ayakkabıları"/>
+            <column name="parent_id" value="5"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Erkek Ayakkabıları"/>
+            <column name="parent_id" value="5"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Spor Ayakkabılar"/>
+            <column name="parent_id" value="5"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="Elektrikli Ev Aletleri"/>
+            <column name="parent_id" value="2"/>
+        </insert>
+        <insert tableName="category">
+            <column name="name" value="TV ve Ses Sistemleri"/>
+            <column name="parent_id" value="2"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -60,5 +60,37 @@
             <column name="variant" value="Hafıza"/>
             <column name="value" value="128GB"/>
         </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Hafıza"/>
+            <column name="value" value="256GB"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Hafıza"/>
+            <column name="value" value="512GB"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Beden"/>
+            <column name="value" value="38"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Beden"/>
+            <column name="value" value="39"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Beden"/>
+            <column name="value" value="40"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Beden"/>
+            <column name="value" value="41"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Büyüklük"/>
+            <column name="value" value="On-Ear"/>
+        </insert>
+        <insert tableName="variant">
+            <column name="variant" value="Büyüklük"/>
+            <column name="value" value="Over-Ear"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

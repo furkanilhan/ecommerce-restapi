@@ -46,6 +46,42 @@
         <insert tableName="product_type">
             <column name="name" value="Cep Telefonu"/>
         </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Ayakkabı"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Kulaklık"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Bilgisayar"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Eşofman"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Kazak"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Ceket"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Tablet"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Televizyon"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Çanta"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Saat"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Küpe"/>
+        </insert>
+        <insert tableName="product_type">
+            <column name="name" value="Pantolon"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

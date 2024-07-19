@@ -57,6 +57,18 @@
         <insert tableName="color">
             <column name="name" value="Beyaz"/>
         </insert>
+        <insert tableName="color">
+            <column name="name" value="Turuncu"/>
+        </insert>
+        <insert tableName="color">
+            <column name="name" value="Mor"/>
+        </insert>
+        <insert tableName="color">
+            <column name="name" value="Pembe"/>
+        </insert>
+        <insert tableName="color">
+            <column name="name" value="Gri"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

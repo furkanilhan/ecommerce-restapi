@@ -105,62 +105,74 @@
         <insert tableName="product">
             <column name="category_id" value="4"/>
             <column name="name" value="Polo Yaka Tişört"/>
-            <column name="description" value="Kısa kollu, pamuklu, ince tişört"/>
+            <column name="description" value="Kısa kollu, pamuklu, rahat tişört"/>
             <column name="product_type_id" value="1"/>
             <column name="brand_id" value="1"/>
             <column name="brand_model_id" value="1"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="product">
             <column name="category_id" value="4"/>
             <column name="name" value="Bisiklet Yaka Tişört"/>
-            <column name="description" value="Çizgili, pamuklu, ince tişört"/>
+            <column name="description" value="Çizgili, pamuklu, rahat tişört"/>
             <column name="product_type_id" value="1"/>
             <column name="brand_id" value="1"/>
             <column name="brand_model_id" value="2"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="product">
             <column name="category_id" value="4"/>
             <column name="name" value="Baskılı Tişört"/>
-            <column name="description" value="Baskılı, keten, ince tişört"/>
+            <column name="description" value="Baskılı, kaliteli, keten tişört"/>
             <column name="product_type_id" value="1"/>
             <column name="brand_id" value="2"/>
             <column name="brand_model_id" value="3"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="product">
             <column name="category_id" value="3"/>
             <column name="name" value="Iphone 15"/>
-            <column name="description" value="Eşsiz kamera, retina ekran"/>
+            <column name="description" value="Gelişmiş kamera, yüksek çözünürlük ekran"/>
             <column name="product_type_id" value="2"/>
             <column name="brand_id" value="3"/>
             <column name="brand_model_id" value="4"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="product">
             <column name="category_id" value="3"/>
             <column name="name" value="Iphone 15"/>
-            <column name="description" value="En iyi kamera, retina ekran"/>
+            <column name="description" value="Üstün kamera özellikleri, yüksek çözünürlük ekran"/>
             <column name="product_type_id" value="2"/>
             <column name="brand_id" value="3"/>
             <column name="brand_model_id" value="5"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
         </insert>
         <insert tableName="product">
             <column name="category_id" value="3"/>
             <column name="name" value="Samsung Galaxy S23"/>
-            <column name="description" value="Güçlü işlemci, oled ekran"/>
+            <column name="description" value="Yüksek performanslı işlemci, OLED ekran"/>
             <column name="product_type_id" value="2"/>
             <column name="brand_id" value="4"/>
             <column name="brand_model_id" value="6"/>
-            <column name="created_at" valueDate="2024-07-12T00:00:00"/>
-            <column name="updated_at" valueDate="2024-07-12T00:00:00"/>
+        </insert>
+        <insert tableName="product">
+            <column name="category_id" value="1"/>
+            <column name="name" value="Adidas Ultraboost 22"/>
+            <column name="description" value="Yüksek konfor ve destek sağlayan koşu ayakkabısı"/>
+            <column name="product_type_id" value="3"/>
+            <column name="brand_id" value="6"/>
+            <column name="brand_model_id" value="8"/>
+        </insert>
+        <insert tableName="product">
+            <column name="category_id" value="2"/>
+            <column name="name" value="Sony WH-1000XM5"/>
+            <column name="description" value="Aktif gürültü engelleyici özellikli kablosuz kulaklık"/>
+            <column name="product_type_id" value="4"/>
+            <column name="brand_id" value="7"/>
+            <column name="brand_model_id" value="10"/>
+        </insert>
+        <insert tableName="product">
+            <column name="category_id" value="5"/>
+            <column name="name" value="Dell XPS 13"/>
+            <column name="description" value="İnce ve hafif dizüstü bilgisayar"/>
+            <column name="product_type_id" value="5"/>
+            <column name="brand_id" value="11"/>
+            <column name="brand_model_id" value="12"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

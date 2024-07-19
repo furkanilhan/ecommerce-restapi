@@ -25,6 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,7 +86,7 @@ public class CustomerOrderServiceImplTest {
         cartItem.setProductVariant(productVariant);
         cartItem.setQuantity(2);
 
-        cart.setCartItems(List.of(cartItem));
+        cart.setCartItems(new ArrayList<>(List.of(cartItem)));
 
         customerOrder = new CustomerOrder();
         customerOrder.setId(1L);

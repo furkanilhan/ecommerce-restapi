@@ -65,9 +65,6 @@ public class CartController {
         }
 
         CartAddResponse response = new CartAddResponse(successfulAdditions, failedAdditions, availableStock);
-        if (!failedAdditions.isEmpty()) {
-            return ResponseEntity.badRequest().body(response);
-        }
 
         return ResponseEntity.ok(response);
     }

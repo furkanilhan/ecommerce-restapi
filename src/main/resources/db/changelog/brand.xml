@@ -51,6 +51,30 @@
         <insert tableName="brand">
             <column name="name" value="Samsung"/>
         </insert>
+        <insert tableName="brand">
+            <column name="name" value="Nike"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Adidas"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Sony"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Huawei"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Puma"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Under Armour"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Dell"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="name" value="Microsoft"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

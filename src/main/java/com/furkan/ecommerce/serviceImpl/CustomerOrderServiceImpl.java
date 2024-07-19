@@ -88,7 +88,7 @@ public class CustomerOrderServiceImpl implements CustomerOrderService {
                 customerOrderRepository.save(customerOrder);
                 productVariantService.decreaseProductVariantsQuantity(orderItems);
 
-                cart.setCartItems(new ArrayList<>());
+                cart.getCartItems().clear();
                 cartService.save(cart);
 
             } else {

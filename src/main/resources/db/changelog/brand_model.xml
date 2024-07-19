@@ -49,29 +49,102 @@
     <!-- Insert Sample Data into brand_model Table -->
     <changeSet id="insert-brand_model-data" author="fuilhan">
         <insert tableName="brand_model">
-            <column name="name" value="J2G"/>
-            <column name="brand_id" valueComputed="1"/>
+            <column name="name" value="Lacoste Polo"/>
+            <column name="brand_id" value="1"/>
         </insert>
         <insert tableName="brand_model">
-            <column name="name" value="AU8"/>
-            <column name="brand_id" valueComputed="1"/>
+            <column name="name" value="Lacoste Classic"/>
+            <column name="brand_id" value="1"/>
         </insert>
         <insert tableName="brand_model">
-            <column name="name" value="Black"/>
-            <column name="brand_id" valueComputed="2"/>
+            <column name="name" value="Mavi Denim Jacket"/>
+            <column name="brand_id" value="2"/>
         </insert>
         <insert tableName="brand_model">
-            <column name="name" value="Iphone 15"/>
-            <column name="brand_id" valueComputed="3"/>
+            <column name="name" value="Mavi Slim Fit"/>
+            <column name="brand_id" value="2"/>
         </insert>
         <insert tableName="brand_model">
-            <column name="name" value="Iphone 15 Pro Max"/>
-            <column name="brand_id" valueComputed="3"/>
+            <column name="name" value="iPhone 15"/>
+            <column name="brand_id" value="3"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="iPhone 15 Pro Max"/>
+            <column name="brand_id" value="3"/>
         </insert>
         <insert tableName="brand_model">
             <column name="name" value="Galaxy S23"/>
-            <column name="brand_id" valueComputed="4"/>
+            <column name="brand_id" value="4"/>
         </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Galaxy S23 Ultra"/>
+            <column name="brand_id" value="4"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Nike Air Max 270"/>
+            <column name="brand_id" value="5"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Nike React Infinity"/>
+            <column name="brand_id" value="5"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Adidas Ultraboost"/>
+            <column name="brand_id" value="6"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Adidas NMD"/>
+            <column name="brand_id" value="6"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Sony WH-1000XM5"/>
+            <column name="brand_id" value="7"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Sony Xperia 1 IV"/>
+            <column name="brand_id" value="7"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Huawei P60 Pro"/>
+            <column name="brand_id" value="8"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Huawei Mate X2"/>
+            <column name="brand_id" value="8"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Puma RS-X"/>
+            <column name="brand_id" value="9"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Puma Suede"/>
+            <column name="brand_id" value="9"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Under Armour HOVR"/>
+            <column name="brand_id" value="10"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Under Armour Project Rock"/>
+            <column name="brand_id" value="10"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Dell XPS 13"/>
+            <column name="brand_id" value="11"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Dell Inspiron 15"/>
+            <column name="brand_id" value="11"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Microsoft Surface Pro 9"/>
+            <column name="brand_id" value="12"/>
+        </insert>
+        <insert tableName="brand_model">
+            <column name="name" value="Microsoft Surface Laptop 5"/>
+            <column name="brand_id" value="12"/>
+        </insert>
+
     </changeSet>
 
 </databaseChangeLog>
