@@ -8,7 +8,6 @@ This project is a Spring Boot application that includes the basic functionalitie
 - [Setup and Running](#setup-and-running)
 - [Using Docker](#using-docker)
 - [Manual Setup with Maven](#using-maven)
-- [Configuration](#configuration)
 - [Dependencies](#dependencies)
 - [Database Schema](#database-schema)
 - [API Usage](#api-usage)
@@ -45,40 +44,6 @@ This project is developed using Spring Boot 3.3.1, Spring Security 6.3.1, and Ja
    ```
 3. **Once the application is running, you can access it at http://localhost:8080.**
 
-
-## Configuration
-
-The following configurations are made in the src/main/resources/application.properties file:
-
-- **Database Connection:**
-
-   ```sh
-   spring.datasource.url=jdbc:postgresql://localhost:5432/ecommerce
-   spring.datasource.username=postgres
-   spring.datasource.password=postgres
-   spring.datasource.driver-class-name=org.postgresql.Driver
-  ```
-
-- **JPA and Liquibase Settings:**
-
-   ```sh
-   spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
-   spring.jpa.hibernate.ddl-auto = none
-   spring.liquibase.change-log=classpath:db/changelog/changelog.xml
-   ```
-
-- **JWT Settings:**
-
-  ```sh
-  ecommerce.app.jwtSecret=furkanSecret
-  ecommerce.app.jwtExpirationMs=86400000
-  ```
-
-- **Stripe API Key:**
-
-   ```sh
-   stripe.api.key=sk_test_51PctPj2LpGFcoSwXNgikoEXSlJn7tYUZ4ZMEg68pulTQH9Xn0GnB4QVoyXyqhDbDReYUhbxgl5ZXp0pQod5GfRLK009OwGxQTQ
-   ```
 
 ## Dependencies
 
