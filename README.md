@@ -37,12 +37,12 @@ This project is developed using Spring Boot 3.3.1, Spring Security 6.3.1, and Ja
 
 1. Ensure that the PostgreSQL database is running. (You can use the command `docker-compose up --build -d postgresql`.)
 
-2. **Open a terminal in the project directory and run the following commands::**
+2. **Open a terminal in the project directory and run the following commands:**
 
    ```sh
    mvn clean install
    ```
-3. **Once the application is running, you can access it at http://localhost:8080.**
+3. **Once the application is running, you can access it at http://localhost:8080/api.**
 
 
 ## Dependencies
